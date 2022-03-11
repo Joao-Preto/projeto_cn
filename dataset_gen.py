@@ -1,4 +1,6 @@
 from cProfile import label
+from cgi import print_arguments
+import http
 from bs4 import BeautifulSoup
 import requests
 import soupsieve
@@ -9,7 +11,40 @@ headers_chiptec = { 'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/
            #,'accept-language' : 'en-US,en'
            #,'referer' : 'https://www.pcdiga.com/componentes/processadores'
           }
+headers_pcpartpicker = { 'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
+           ,'accept-language': 'en-US,en'
+           ,'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
+           ,'accept-encoding': 'gzip, deflate, br'
+           ,'accept-language': 'en-US,en;q=0.9,pt;q=0.8,es;q=0.7'
+           ,'cache-control': 'max-age=0'
+           ,'cookie': 'xcsrftoken=WvajOor66I71EasgW5BE53IZy7hs9QblhaCAvEZ53vQQvONMZEgYP6AL5nEsbfa6; xsessionid=87vvticlztn2850eb82yraw02egpj8bs; xgdpr-consent=allow'
+          }
 dataset_directory = 'datasets/'
+pcpartpicker_url = {
+     'cpu'        : 'https://pcpartpicker.com/products/cpu/'
+    ,'cooler'     : 'https://pcpartpicker.com/products/cpu-cooler/'
+    ,'motherboard': 'https://pcpartpicker.com/products/motherboard/'
+    ,'memory'     : 'https://pcpartpicker.com/products/memory/'
+    ,'storage'    : 'https://pcpartpicker.com/products/internal-hard-drive/'
+    ,'gpu'        : 'https://pcpartpicker.com/products/video-card/'
+    ,'case'       : 'https://pcpartpicker.com/products/case/'
+    ,'power_suply': 'https://pcpartpicker.com/products/power-supply/'
+    ,'os'         : 'https://pcpartpicker.com/products/os/'
+    ,'monitor'    : 'https://pcpartpicker.com/products/monitor/'
+}
+
+pcpartpicker_csv_header = {
+     'cpu'        : 'cpu_name, sku, cpu_core_count, cpu_core_clock, cpu_boost_clock '
+    ,'cooler'     : 'https://pcpartpicker.com/products/cpu-cooler/'
+    ,'motherboard': 'https://pcpartpicker.com/products/motherboard/'
+    ,'memory'     : 'https://pcpartpicker.com/products/memory/'
+    ,'storage'    : 'https://pcpartpicker.com/products/internal-hard-drive/'
+    ,'gpu'        : 'https://pcpartpicker.com/products/video-card/'
+    ,'case'       : 'https://pcpartpicker.com/products/case/'
+    ,'power_suply': 'https://pcpartpicker.com/products/power-supply/'
+    ,'os'         : 'https://pcpartpicker.com/products/os/'
+    ,'monitor'    : 'https://pcpartpicker.com/products/monitor/'
+}
 
 def product_parse_chiptec(url):
     html_text = requests.get(url, headers=headers_chiptec)
@@ -25,10 +60,11 @@ def parse_chiptec():
     soup = BeautifulSoup(html_text.text, 'lxml')
     with open(dataset_directory+'chiptec.csv', 'w') as f:
         f.write('sku, price\n')
-        parse_items_chiptec(f, soup)
+        parse_items_chiptec(f, soup, 1)
         
                 
-def parse_items_chiptec(file, soup):
+def parse_items_chiptec(file, soup, pagina):
+    print(pagina)
     item_list = soup.find('ul', class_='products-grid box').find_all('li', class_='item')
     for item in item_list:
         item_url = item.find('a')['href']
@@ -43,9 +79,58 @@ def parse_items_chiptec(file, soup):
     if next_url is not None:
         newHtml = requests.get(next_url, headers=headers_chiptec)
         newSoup = BeautifulSoup(newHtml.text, 'lxml')
-        parse_items_chiptec(file, newSoup)
+        parse_items_chiptec(file, newSoup, pagina+1)
     
+def parse_pcpartpicker_cpu_page(url='https://pcpartpicker.com/product/g94BD3/amd-ryzen-5-5600x-37-ghz-6-core-processor-100-100000065box'):
+    html=requests.get(url)
+    soup = BeautifulSoup(html.text, 'lxml')
+    spec_list = {}
+    part_name = soup.find('h1', class_='pageTitle').text
+    spec_list['cpu_name']= part_name
+    spec_soup_list = soup.find_all('div', class_='specs')[0].find_all('div', class_='group--spec')
+    
+    for spec_soup in spec_soup_list:
+        spec_paragraph = spec_soup.find('div', class_='group__content').p
+        if spec_paragraph is None:
+            l1_specs= spec_soup.find('div', class_='group__content').find_all('li')
+            spec_1= l1_specs[0].text.replace('\n', '')
+            spec_2= l1_specs[1].text.replace('\n', '')
+            spec_list.append(spec_1)
+            spec_list.append(spec_2)
+        else:
+            spec = spec_paragraph.text.replace('\n', '')
+        spec_list.append(spec)
+        
+    with open('test5.html', 'w') as f:
+        f.write(str(spec_list))
+        
+    return spec_list
+    
+def parse_pcpartpicker_cpu_headers(url='https://pcpartpicker.com/product/g94BD3/amd-ryzen-5-5600x-37-ghz-6-core-processor-100-100000065box'):
+    html=requests.get(url)
+    soup = BeautifulSoup(html.text, 'lxml')
+    spec_list = []
+    spec_soup_list = soup.find_all('div', class_='specs')[0].find_all('div', class_='group--spec')
+    
+    for spec_soup in spec_soup_list:
+        spec_header = spec_soup.h3.text
+        spec_list.append(spec_header)
+        
+    return spec_list
+
+def parse_pcpart_picker_cpu():
+    http_response = requests.get(pcpartpicker_url['cpu'], headers=headers_pcpartpicker)
+    print(http_response)
+    soup = BeautifulSoup(http_response.text, 'lxml')
+    part_html_list = soup.find('tbody')
+    print(part_html_list)
+        
+    with open('test6.html', 'w') as f:
+        f.write(str(part_html_list))
+        f.write(str(http_response.content))
+        
+#    print(str(parse_pcpartpicker_cpu_headers()))
     
 if __name__ == '__main__':
-    parse_chiptec()
+    parse_pcpart_picker_cpu()
     
