@@ -1,6 +1,7 @@
 from cProfile import label
 from cgi import print_arguments
 import http
+from pkgutil import iter_modules
 from bs4 import BeautifulSoup
 import requests
 import soupsieve
@@ -64,14 +65,16 @@ def parse_chiptec():
         
                 
 def parse_items_chiptec(file, soup, pagina):
-    print(pagina)
+    item_num=1
     item_list = soup.find('ul', class_='products-grid box').find_all('li', class_='item')
     for item in item_list:
+        print(str(pagina)+', '+str(item_num))
         item_url = item.find('a')['href']
         try:
             file.write(product_parse_chiptec(item_url))
         except:
             print(item_url)
+        item_num = item_num+1
     last_link= soup.find('div', class_='toolbar-bottom').find('ol').find_all('li')[-1].find_all('a', class_='next')
     next_url=None
     if len(last_link) > 0:
@@ -81,7 +84,7 @@ def parse_items_chiptec(file, soup, pagina):
         newSoup = BeautifulSoup(newHtml.text, 'lxml')
         parse_items_chiptec(file, newSoup, pagina+1)
     
-def parse_pcpartpicker_cpu_page(url='https://pcpartpicker.com/product/g94BD3/amd-ryzen-5-5600x-37-ghz-6-core-processor-100-100000065box'):
+def parse_pcpartpicker_page(url='https://pcpartpicker.com/product/g94BD3/amd-ryzen-5-5600x-37-ghz-6-core-processor-100-100000065box'):
     html=requests.get(url)
     soup = BeautifulSoup(html.text, 'lxml')
     spec_list = {}
@@ -90,47 +93,22 @@ def parse_pcpartpicker_cpu_page(url='https://pcpartpicker.com/product/g94BD3/amd
     spec_soup_list = soup.find_all('div', class_='specs')[0].find_all('div', class_='group--spec')
     
     for spec_soup in spec_soup_list:
+        spec_name = spec_soup.h3.text
         spec_paragraph = spec_soup.find('div', class_='group__content').p
         if spec_paragraph is None:
             l1_specs= spec_soup.find('div', class_='group__content').find_all('li')
             spec_1= l1_specs[0].text.replace('\n', '')
             spec_2= l1_specs[1].text.replace('\n', '')
-            spec_list.append(spec_1)
-            spec_list.append(spec_2)
+            spec_list[spec_name+'_1']= spec_1
+            spec_list[spec_name+'_2']= spec_2
         else:
             spec = spec_paragraph.text.replace('\n', '')
-        spec_list.append(spec)
+            spec_list[spec_name]= spec
         
-    with open('test5.html', 'w') as f:
+    with open('test5.json', 'w') as f:
         f.write(str(spec_list))
         
     return spec_list
-    
-def parse_pcpartpicker_cpu_headers(url='https://pcpartpicker.com/product/g94BD3/amd-ryzen-5-5600x-37-ghz-6-core-processor-100-100000065box'):
-    html=requests.get(url)
-    soup = BeautifulSoup(html.text, 'lxml')
-    spec_list = []
-    spec_soup_list = soup.find_all('div', class_='specs')[0].find_all('div', class_='group--spec')
-    
-    for spec_soup in spec_soup_list:
-        spec_header = spec_soup.h3.text
-        spec_list.append(spec_header)
-        
-    return spec_list
-
-def parse_pcpart_picker_cpu():
-    http_response = requests.get(pcpartpicker_url['cpu'], headers=headers_pcpartpicker)
-    print(http_response)
-    soup = BeautifulSoup(http_response.text, 'lxml')
-    part_html_list = soup.find('tbody')
-    print(part_html_list)
-        
-    with open('test6.html', 'w') as f:
-        f.write(str(part_html_list))
-        f.write(str(http_response.content))
-        
-#    print(str(parse_pcpartpicker_cpu_headers()))
-    
+   
 if __name__ == '__main__':
-    parse_pcpart_picker_cpu()
-    
+    parse_chiptec()   
