@@ -1,6 +1,6 @@
 import time
+from urllib import response
 from bs4 import BeautifulSoup
-from flask import session
 import requests
 import json
 
@@ -29,6 +29,11 @@ pcdiga_headers = {
     ,'accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
     ,'accept-encoding' : 'gzip, deflate, br'
 }
+
+chip7_headers = {
+     'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
+}
+
 dataset_directory = 'datasets/'
 pcpartpicker_url = {
      'cpu'        : 'https://pcpartpicker.com/products/cpu/'
@@ -56,6 +61,17 @@ pcpartpicker_csv_header = {
     ,'monitor'    : 'https://pcpartpicker.com/products/monitor/'
 }
 
+chip_7_components_urls = [
+    'https://www.chip7.pt/102-motherboards',
+    'https://www.chip7.pt/98-cpu',
+    'https://www.chip7.pt/104-placas-graficas',
+    'https://www.chip7.pt/101-memorias',
+    'https://www.chip7.pt/103-placas-de-som',
+    'https://www.chip7.pt/99-discos',
+    'https://www.chip7.pt/114-drives',
+    'https://www.chip7.pt/95-caixas',
+    'https://www.chip7.pt/100-fontes-alimentacao',
+]
 
 def parse_chiptec():
     with open(dataset_directory+'chiptec.json', 'w') as f:
@@ -189,8 +205,38 @@ def parse_golbaldata_page(url='https://www.globaldata.pt/processador-intel-core-
     print(product)
     
     return product
+
+def parse_chip7_components():
+    components = []
+    for coponent_list_page_url in chip_7_components_urls:
+        response = requests.get(coponent_list_page_url, headers=chip7_headers)
+        print(response)
+        soup = BeautifulSoup(response.text, 'lxml')
+        
+        
+        pass
+
+def parse_chip7_page(url='https://www.chip7.pt/intel/97451-intel-core-i3-10105f-processador-37-ghz-6-mb-smart-cache-caixa.html'):
+    response = requests.get(url, headers=chip7_headers)
+    print(response)
+    soup = BeautifulSoup(response.text, 'lxml')
+    
+    product = {}
+    product['sku'] = soup.find('span', itemprop='sku').text
+    product['price'] = soup.find('div', class_='price').span.text.replace(' €', '')
+    with open('test9.html', 'w') as f:
+        f.write(product['price'])
    
 if __name__ == '__main__':
-    session = requests.Session()
-    response = session.get(pcdiga_components, headers=pcdiga_headers)
+    response = requests.get(chip_7_components_urls[1], headers=chip7_headers)
     print(response)
+    soup = BeautifulSoup(response.text, 'lxml')
+    
+    url_container_list = soup.find('div', class_='ais-hits--item')
+    url = url_container_list[0]
+    print(url)
+    '''
+    url_list = []
+    for url_container in url_container_list:
+        url_list.append()
+        '''
