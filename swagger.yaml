@@ -41,6 +41,93 @@ schemes:
 - https
 - http
 paths:
+  /power_supplies/:
+    get:
+      tags:
+      - power suplies
+      summary: Get power supplies by potency
+      operationId: get_power_supplies
+      produces:
+      - application/xml
+      - application/json
+      parameters:
+      - name: min_potency
+        in: query
+        description: The minimum potency of the power supply.
+        type: integer
+        format: int32
+        required: false
+      - name: max_potency
+        in: query
+        description: The maximum potency of the power supply.
+        type: integer
+        format: int32
+        required: false
+      - name: manufacturer
+        in: query
+        description: The manufacturer of the power supply
+        type: string
+        required: false
+      - name: modular
+        in: query
+        description: The modularity of the power supply
+        type: string
+        enum:
+        - Full modular
+        - Semi modular
+        - Not modular
+        required: false
+      - name: form_factor
+        in: query
+        description: The form factor of the power supply
+        type: string
+        enum:
+        - ATX
+        - ATX / BTX
+        - ATX12V
+        - ATX12V / EPS12V
+        - Flex ATX
+        - Micro ATX
+        - Mini ATX
+        - Mini ITX
+        - SFX12V
+        - TFX12V
+        required: false
+      - name: color
+        in: query
+        description: The color of the power supply
+        type: string
+        required: false
+      - name: fan
+        in: query
+        description: Wether the power supply has a fan or Not
+        type: boolean
+        required: false
+      - name: connectors
+        in: query
+        description: The types of connectors of the power supply
+        type: string
+        required: false
+      - name: effeciency
+        in: query
+        type: string
+        enum:
+        - 80+
+        - 80+ Bronze
+        - 80+ Silver
+        - 80+ Gold
+        - 80+ Platinum
+        - 80+ Titanium
+        required: false
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Part"
+        400:
+          description: Invalid Parameters
   /cases:
     get:
       tags:
@@ -51,6 +138,10 @@ paths:
       - application/json
       - application/xml
       parameters: 
+        - name: manufacturer
+          in: query
+          type: string
+          required: false
         - name: case_type
           in: query
           type: string
@@ -84,7 +175,42 @@ paths:
             - BTX
             - NLX
           required: false
-
+        - name: color
+          in: query
+          type: string
+          required: false
+        - name: side_panel_window
+          in: query
+          type: string
+          enum:
+          - Acrylic
+          - Mesh
+          - Tinted Acrylic
+          - Tempered Glass
+          - Tinted Tempered Glass
+          required: false
+        - name: shroud
+          in: query
+          type: boolean
+          required: false
+        - name: front_panel
+          in: query
+          type: string
+          enum:
+          - USB 3.2 Gen 2x2 Type-C
+          - USB 3.2 Gen 2 Type-C
+          - USB 3.2 Gen 1 Type-C
+          - USB 3.2 Gen 1 Type-A
+          - USB 2.0 Type-A
+          required: false
+        - name: min_graphics_card_length
+          in: query
+          type: integer
+          required: false
+        - name: max_graphics_card_length
+          in: query
+          type: integer
+          required: false
       responses:
         200:
           description: success
@@ -104,13 +230,44 @@ paths:
       - application/json
       - application/xml
       parameters:
+        - name: manufacturer
+          in: query
+          type: string
+          required: false
+        - name: color
+          in: query
+          type: string
+          required: false
         - name: socket_compatability
           in: query
           type: string
           required: false
-        - name: altura_heatsink
+        - name: max_heatsink_height
+          description: The max height the heatsink can have in milimetres
+          in: query
+          type: integer
+          format: int32
+          required: false
+        - name: min_heatsink_height
+          description: The min height the heatsink can have in milimetres
+          in: query
+          type: integer
+          format: int32
+          required: false
+        - name: fan
+          in: query
+          type: boolean
+          required: false
+        - name: radiator_size
           in: query
           type: string
+          enum:
+          - 120 mm
+          - 140 mm
+          - 240 mm
+          - 280 mm
+          - 360 mm
+          - 420 mm
           required: false
         # water coolers?
       responses:
@@ -121,7 +278,7 @@ paths:
             items:
               $ref: "#/definitions/Part"
         400:
-          description: invalid parameters
+          description: Invalid Parameters
   /parts/:
     get:
       tags: 
@@ -155,35 +312,8 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Part"
-  /powersupplies/{potency}:
-    get:
-      tags:
-      - "Power supplies"
-      summary: "Get power supplies by potency"
-      description: ""
-      operationId: "getPowerSuppliesByPotency"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "potency"
-        description: "The potency that needs to be fetched. Use potency1 for testing. "
-        required: true
-        type: "array"
-      - name: "max"
-        in: "path"
-        description: "The potency that needs to be fetched. Use potency1 for testing. "
-        required: true
-        type: "int"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/PowerSupplies"
-        "400":
-          description: "Invalid potency supplies"
-        "404":
-          description: "Power supplies not found"
+        400:
+          description: Invalid Parameters
 definitions:
   Part:
     type: object
@@ -204,21 +334,15 @@ definitions:
   MotherboardFormFactor:
     type: string
     enum:
-      - Full ATX
-      - Mini ATX
-      - Micro ATX
+      - AT
+      - ATX
+      - EATX
       - Flex ATX
+      - HPTX
+      - Micro ATX
       - Mini ITX
-      - Em ITX
-      - Nano ITX
-      - Pico ITX
-      - Mobile ITX
-      - DTX
+      - Thin Mini ITX
       - Mini DTX
-      - SSI
+      - SSI CEB
       - SSI EEB
-      - E-ATX
-      - Extended ATX
-      - SSI MEB
-      - BTX
-      - NLX
+      - XL ATX
