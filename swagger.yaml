@@ -155,6 +155,35 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Part"
+  /powersupplies/{potency}:
+    get:
+      tags:
+      - "Power supplies"
+      summary: "Get power supplies by potency"
+      description: ""
+      operationId: "getPowerSuppliesByPotency"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "potency"
+        description: "The potency that needs to be fetched. Use potency1 for testing. "
+        required: true
+        type: "array"
+      - name: "max"
+        in: "path"
+        description: "The potency that needs to be fetched. Use potency1 for testing. "
+        required: true
+        type: "int"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PowerSupplies"
+        "400":
+          description: "Invalid potency supplies"
+        "404":
+          description: "Power supplies not found"
 definitions:
   Part:
     type: object
