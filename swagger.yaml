@@ -331,6 +331,56 @@ paths:
               $ref: "#/definitions/Part"
         400:
           description: Invalid Parameters
+  /graphics_cards/:
+    get:
+      tags:
+      - graphics cards
+      summary: Get graphics cards by manufacter
+      operationId: get_graphics_manufacter
+      parameters:
+        - name: GPU manufacter
+          in: query
+          description: The manufacter of the GPU
+          type: string
+          required: true
+          enum:
+          - AMD
+          - NVIDIA
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Part"
+        400:
+          description: Invalid Parameters
+  /storage_disk/:
+    get:
+      tags:
+      - storage
+      summary: Get storage Form Factor
+      operationId: get_storage_type
+      parameters:
+        - name: storage type
+          in: query
+          description: The Form Factor of the storage
+          type: string
+          enum:
+          - M.2
+          - SATA
+          - mSATA
+          - PCIe
+          required: true
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Part"
+        400:
+          description: Invalid Parameters
   /power_supplies/:
     get:
       tags:
