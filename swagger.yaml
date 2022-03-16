@@ -1,51 +1,195 @@
 swagger: "2.0"
 info:
-  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
-  version: "1.0.0"
-  title: "Swagger Petstore"
-  termsOfService: "http://swagger.io/terms/"
+  description: This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.
+  version: 1.0.0
+  title: Swagger Petstore
+  termsOfService: http://swagger.io/terms/
   contact:
-    email: "apiteam@swagger.io"
+    email: apiteam@swagger.io
   license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "petstore.swagger.io"
-basePath: "/v2"
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+consumes:
+  - application/json
+produces:
+  - application/json
+  
+host: petstore.swagger.io
+basePath: /api
 tags:
-- name: "processors"
-  description: "Everything about Processors"
-- name: "motherboards"
-  description: "Everything about Motherboards"
-- name: "memorie sticks"
-  description: "Everything about Ram Memory"
-- name: "graphics cards"
-  description: "Everything about Graphics Cards"
-- name: "storage"
-  description: "Everything about Storage disks"
-- name: "power suplies"
-  description: "Everything about Power Suplies"
-- name: "fans"
-  description: "Everything about Fans"
-- name: "cases"
-  description: "Everything about Computer Cases"
-- name: "coolers"
-  description: "Everything about Cooling"
-- name: "parts"
-  description: "search for parts"
+- name: processors
+  description: Everything about Processors
+- name: motherboards
+  description: Everything about Motherboards
+- name: memorie sticks
+  description: Everything about Ram Memory
+- name: graphics cards
+  description: Everything about Graphics Cards
+- name: storage
+  description: Everything about Storage disks
+- name: power suplies
+  description: Everything about Power Suplies
+- name: fans
+  description: Everything about Fans
+- name: cases
+  description: Everything about Computer Cases
+- name: coolers
+  description: Everything about Cooling
+- name: parts
+  description: search for parts
 schemes:
-- "https"
-- "http"
+- https
+- http
 paths:
+  /cases:
+    get:
+      tags:
+      - cases
+      summary: Get a list of cases
+      operationId: get_cases
+      produces:
+      - application/json
+      - application/xml
+      parameters: 
+        - name: case_type
+          in: query
+          type: string
+          enum:
+            - Full Tower
+            - Mid Tower
+            - Mini Tower
+            - Slim Line
+            - Small Form Factor
+          required: false
+        - name: motherboard_form_factor
+          in: query
+          type: string
+          enum:
+            - Full ATX
+            - Mini ATX
+            - Micro ATX
+            - Flex ATX
+            - Mini ITX
+            - Em ITX
+            - Nano ITX
+            - Pico ITX
+            - Mobile ITX
+            - DTX
+            - Mini DTX
+            - SSI
+            - SSI EEB
+            - E-ATX
+            - Extended ATX
+            - SSI MEB
+            - BTX
+            - NLX
+          required: false
 
-securityDefinitions:
-  petstore_auth:
-    type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-    flow: "implicit"
-    scopes:
-      write:pets: "modify pets in your account"
-      read:pets: "read your pets"
-  api_key:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Part"
+        400:
+          description: invalid parameters
+  /coolers:
+    get:
+      tags:
+        - coolers
+      summary: get a list of coolers
+      operationId: get_coolers
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+        - name: socket_compatability
+          in: query
+          type: string
+          required: false
+        - name: altura_heatsink
+          in: query
+          type: string
+          required: false
+        # water coolers?
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Part"
+        400:
+          description: invalid parameters
+  /parts/:
+    get:
+      tags: 
+        - parts
+      summary: search for parts
+      operationId: search_part
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+        - name: sku
+          in: query
+          type: string
+          required: false
+        - name: part name
+          in: query
+          type: string
+          required: false
+        - name: manufacturer
+          in: query
+          type: string
+          required: false
+        - name: color
+          in: query
+          type: string
+          required: false
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Part"
+definitions:
+  Part:
+    type: object
+    properties:
+      sku:
+        type: string
+      price:
+        type: number
+        format: double
+  CaseType: 
+    type: string
+    enum:
+      - Full Tower
+      - Mid Tower
+      - Mini Tower
+      - Slim Line
+      - Small Form Factor
+  MotherboardFormFactor:
+    type: string
+    enum:
+      - Full ATX
+      - Mini ATX
+      - Micro ATX
+      - Flex ATX
+      - Mini ITX
+      - Em ITX
+      - Nano ITX
+      - Pico ITX
+      - Mobile ITX
+      - DTX
+      - Mini DTX
+      - SSI
+      - SSI EEB
+      - E-ATX
+      - Extended ATX
+      - SSI MEB
+      - BTX
+      - NLX
