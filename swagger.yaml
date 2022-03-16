@@ -128,6 +128,99 @@ paths:
               $ref: "#/definitions/Part"
         400:
           description: Invalid Parameters
+  /fans:
+    get:
+      tags:
+        - fans
+      summary: Get a list of fans
+      operationId: get_fans
+      produces:
+      - application/json
+      - application/xml
+      parameters: 
+        - name: manufacturer
+          in: query
+          type: string
+          required: false
+        - name: size
+          in: query
+          type: string
+          enum:
+          - 40 mm
+          - 70 mm
+          - 80 mm
+          - 92 mm
+          - 95 mm
+          - 120 mm
+          - 180 mm
+          - 193 mm
+          - 200 mm
+          - 220 mm
+          - 230 mm
+          required: false
+        - name: color
+          in: query
+          type: string
+          required: false
+        - name: quantidade
+          in: query
+          type: integer
+          required: false
+        - name: PWM
+          in: query
+          type: boolean
+          required: false
+        - name: led
+          in: query
+          type: string
+          enum:
+          - RGB
+          - Addressable RGB
+          - Multicolor
+          - Single color
+          - Blue
+          - Green
+          - Orange
+          - Pink
+          - Purple
+          - Red
+          - UV
+          - UV Blue
+          - UV Green
+          - UV Red
+          - White
+          - Yellow
+          required: false
+        - name: connector
+          in: query
+          type: string
+          enum:
+          - 3-pin
+          - 4-pin PWM
+          - 4-pin 12V RGB
+          - Proprietary RGB
+          - 3-pin 5V Addressable RGB
+          - Proprietary
+          - Proprietary PWM
+          required: false
+        - name: controler
+          in: query
+          type: string
+          enum:
+          - Manual
+          - USB
+          - 12V RGB
+          - 5V Addressable RGB
+          required: false
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Part"
+        400: 
+          description: Invalid Parameters 
   /cases:
     get:
       tags:
@@ -219,7 +312,7 @@ paths:
             items:
               $ref: "#/definitions/Part"
         400:
-          description: invalid parameters
+          description: Invalid Parameters
   /coolers:
     get:
       tags:
