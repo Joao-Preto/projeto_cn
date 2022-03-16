@@ -131,10 +131,10 @@ paths:
               $ref: "#/definitions/Part"
         400:
           description: Invalid Parameters
-  /motherboard:
+  /motherboards/:
     get:
       tags:
-      - motherboard
+      - motherboards
       summary: Get a list of motherboards
       operationId: get_motherboards
       produces:
@@ -151,6 +151,7 @@ paths:
           enum:
             - Intel
             - AMD
+          required: false
         - name: socket
           in: query
           type: string
@@ -177,13 +178,25 @@ paths:
           required: false
         - name: max_ram_size
           in: query
-          description: The maximum amount of the ram processor can use.
+          description: The maximum amount of the ram processor can use(used when motherboard is selected first).
           type: integer
           format: int32
           required: false
         - name: max_ram_speed
           in: query
-          description: The maximum ram speed the processor can use(Ram Stick Speed may be higher).
+          description: The maximum ram speed the processor can use(Ram Stick Speed may be higher).(used when motherboard is selected first)
+          type: integer
+          format: int32
+          required: false
+        - name: min_ram_size
+          in: query
+          description: The maximum amount of the ram processor need(used when ram/processor is selected first).
+          type: integer
+          format: int32
+          required: false
+        - name: min_ram_speed
+          in: query
+          description: The maximum ram speed the processor can use(Ram Stick Speed may be higher).(used when ram/processor is selected first)
           type: integer
           format: int32
           required: false
@@ -418,7 +431,7 @@ paths:
               $ref: "#/definitions/Part"
         400:
           description: Invalid Parameters
-  /fans:
+  /fans/:
     get:
       tags:
         - fans
@@ -511,7 +524,7 @@ paths:
               $ref: "#/definitions/Part"
         400: 
           description: Invalid Parameters 
-  /cases:
+  /cases/:
     get:
       tags:
       - cases
@@ -603,7 +616,7 @@ paths:
               $ref: "#/definitions/Part"
         400:
           description: Invalid Parameters
-  /coolers:
+  /coolers/:
     get:
       tags:
         - coolers
