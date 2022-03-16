@@ -41,6 +41,296 @@ schemes:
 - https
 - http
 paths:
+  /processors/:
+    get:
+      tags:
+      - processors
+      summary: Get processors
+      operationId: get_processors
+      produces:
+      - application/xml
+      - application/json
+      parameters:
+        - name: manufacturer
+          in: query
+          type: string
+          enum:
+            - Intel
+            - AMD
+          required: false
+        - name: socket
+          in: query
+          type: string
+          enum:
+            - LGA1151
+            - LGA1200
+            - LGA1700
+            - LGA2066
+            - TR4
+            - sTRX4
+            - SWRX8
+            - AM4
+          required: false
+        - name: series
+          in: query
+          type: string
+          enum:
+            - Intel Pentuim
+            - Intel Celeron
+            - Intel Core i3
+            - Intel Core i5
+            - Intel Core i7
+            - Intel Core i9
+            - AMD Ryzen 5
+            - AMD Ryzen 7
+            - AMD Ryzen 9
+            - AMD Ryzen Threadripper
+            - AMD Ryzen Threadripper Pro
+          required: false
+        - name: clock_speed
+          in: query
+          description: The base clock speed of the processor.
+          type: integer
+          format: int32
+          required: false
+        - name: ram_type
+          in: query
+          description: The ram type usable by the processor.
+          type: string
+          enum:
+              - DDR
+              - DDR2
+              - DDR3
+              - DDR4
+              - DDR5
+          required: false
+        - name: max_ram_size
+          in: query
+          description: The maximum amount of the ram processor can use.
+          type: integer
+          format: int32
+          required: false
+        - name: max_ram_speed
+          in: query
+          description: The maximum ram speed the processor can use(Ram Stick Speed may be higher).
+          type: integer
+          format: int32
+          required: false
+        - name: min_ram_speed
+          in: query
+          description: The minimum ram speed the processor needs to run(Ram Stick Speed can't be lower).
+          type: integer
+          format: int32
+          required: false
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Part"
+        400:
+          description: Invalid Parameters
+  /motherboard:
+    get:
+      tags:
+      - motherboard
+      summary: Get a list of motherboards
+      operationId: get_motherboards
+      produces:
+      - application/json
+      - application/xml
+      parameters: 
+        - name: manufacturer
+          in: query
+          type: string
+          required: false
+        - name: cpu_manufacturer
+          in: query
+          type: string
+          enum:
+            - Intel
+            - AMD
+        - name: socket
+          in: query
+          type: string
+          enum:
+            - LGA1151
+            - LGA1200
+            - LGA1700
+            - LGA2066
+            - TR4
+            - sTRX4
+            - SWRX8
+            - AM4
+          required: false
+        - name: ram_type
+          in: query
+          description: The ram type usable by the processor.
+          type: string
+          enum:
+              - DDR
+              - DDR2
+              - DDR3
+              - DDR4
+              - DDR5
+          required: false
+        - name: max_ram_size
+          in: query
+          description: The maximum amount of the ram processor can use.
+          type: integer
+          format: int32
+          required: false
+        - name: max_ram_speed
+          in: query
+          description: The maximum ram speed the processor can use(Ram Stick Speed may be higher).
+          type: integer
+          format: int32
+          required: false
+        - name: PCIe slots
+          in: query
+          description: The amount of PCIe slots.
+          type: integer
+          format: int32
+          required: false
+        - name: PCIe slots type
+          in: query
+          description: The type of PCIe slots.
+          type: string
+          enum:
+              - PCIe 4.0 x16
+              - PCIe 3.0 x16
+              #add
+          required: false
+        - name: Sata slots
+          in: query
+          description: The amount of Sata slots.
+          type: integer
+          format: int32
+          required: false
+        - name: Sata slots type
+          in: query
+          description: The type of Sata slots.
+          type: string
+          enum:
+              - Sata 2
+              - Sata 3
+              #add
+          required: false
+        - name: M.2 slots
+          in: query
+          description: The amount of M.2 slots.
+          type: integer
+          format: int32
+          required: false
+        - name: M.2 slots type
+          in: query
+          description: The type of M.2 slots.
+          type: string
+          enum:
+              - Sata 2
+              - Sata 3
+              - NVME
+              #add
+          required: false
+        - name: back_panel
+          in: query
+          type: string
+          enum:
+              - USB 3.2 Gen 2x2 Type-C
+              - USB 3.2 Gen 2 Type-C
+              - USB 3.2 Gen 1 Type-C
+              - USB 3.2 Gen 1 Type-A
+              - USB 2.0 Type-A
+              - DisplayPort
+              - HDMI 1.0
+              - HDMI 2.0
+              - RJ-45 port
+              - Audio jacks
+              #add
+          required: false
+        - name: motherboard_form_factor
+          in: query
+          type: string
+          enum:
+              - Full ATX
+              - Mini ATX
+              - Micro ATX
+              - Flex ATX
+              - Mini ITX
+              - Em ITX
+              - Nano ITX
+              - Pico ITX
+              - Mobile ITX
+              - DTX
+              - Mini DTX
+              - SSI
+              - SSI EEB
+              - E-ATX
+              - Extended ATX
+              - SSI MEB
+              - BTX
+              - NLX
+          required: false
+        - name: color
+          in: query
+          type: string
+          required: false
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Part"
+        400:
+          description: invalid parameters
+  /memory_sticks/:
+    get:
+      tags:
+      - memory sticks
+      summary: Get ram
+      operationId: get_memory_sticks
+      produces:
+      - application/xml
+      - application/json
+      parameters:
+        - name: manufacturer
+          in: query
+          type: string
+          required: false
+        - name: ram_type
+          in: query
+          description: The DIMM type of the ram stick.
+          type: string
+          enum:
+              - DDR
+              - DDR2
+              - DDR3
+              - DDR4
+              - DDR5
+          required: false
+        - name: max_ram_size
+          in: query
+          description: The amount of ram of the stick.
+          type: integer
+          format: int32
+          required: false
+        - name: max_ram_speed
+          in: query
+          description: The base clock speed of the ram.
+          type: integer
+          format: int32
+          required: false
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Part"
+        400:
+          description: Invalid Parameters
   /power_supplies/:
     get:
       tags:
