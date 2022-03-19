@@ -13,43 +13,43 @@ consumes:
   - application/json
 produces:
   - application/json
-  
+
 host: petstore.swagger.io
 basePath: /api
 tags:
-- name: processors
-  description: Everything about Processors
-- name: motherboards
-  description: Everything about Motherboards
-- name: memory sticks
-  description: Everything about Ram Memory
-- name: graphics cards
-  description: Everything about Graphics Cards
-- name: storage
-  description: Everything about Storage disks
-- name: power suplies
-  description: Everything about Power Suplies
-- name: fans
-  description: Everything about Fans
-- name: cases
-  description: Everything about Computer Cases
-- name: coolers
-  description: Everything about Cooling
-- name: parts
-  description: search for parts
+  - name: processors
+    description: Everything about Processors
+  - name: motherboards
+    description: Everything about Motherboards
+  - name: memory sticks
+    description: Everything about Ram Memory
+  - name: graphics cards
+    description: Everything about Graphics Cards
+  - name: storage
+    description: Everything about Storage disks
+  - name: power suplies
+    description: Everything about Power Suplies
+  - name: fans
+    description: Everything about Fans
+  - name: cases
+    description: Everything about Computer Cases
+  - name: coolers
+    description: Everything about Cooling
+  - name: parts
+    description: search for parts
 schemes:
-- https
-- http
+  - https
+  - http
 paths:
   /processors/:
     get:
       tags:
-      - processors
+        - processors
       summary: Get processors
       operationId: get_processors
       produces:
-      - application/xml
-      - application/json
+        - application/xml
+        - application/json
       parameters:
         - name: manufacturer
           in: query
@@ -98,11 +98,11 @@ paths:
           description: The ram type usable by the processor.
           type: string
           enum:
-              - DDR
-              - DDR2
-              - DDR3
-              - DDR4
-              - DDR5
+            - DDR
+            - DDR2
+            - DDR3
+            - DDR4
+            - DDR5
           required: false
         - name: min_ram_size
           in: query
@@ -140,13 +140,13 @@ paths:
   /motherboards/:
     get:
       tags:
-      - motherboards
+        - motherboards
       summary: Get a list of motherboards
       operationId: get_motherboards
       produces:
-      - application/json
-      - application/xml
-      parameters: 
+        - application/json
+        - application/xml
+      parameters:
         - name: manufacturer
           in: query
           type: string
@@ -176,11 +176,11 @@ paths:
           description: The ram type usable by the processor.
           type: string
           enum:
-              - DDR
-              - DDR2
-              - DDR3
-              - DDR4
-              - DDR5
+            - DDR
+            - DDR2
+            - DDR3
+            - DDR4
+            - DDR5
           required: false
         - name: max_ram_size
           in: query
@@ -217,9 +217,9 @@ paths:
           description: The type of PCIe slots.
           type: string
           enum:
-              - PCIe 4.0 x16
-              - PCIe 3.0 x16
-              #add
+            - PCIe 4.0 x16
+            - PCIe 3.0 x16
+            #add
           required: false
         - name: Sata slots
           in: query
@@ -232,9 +232,9 @@ paths:
           description: The type of Sata slots.
           type: string
           enum:
-              - Sata 2
-              - Sata 3
-              #add
+            - Sata 2
+            - Sata 3
+            #add
           required: false
         - name: M.2 slots
           in: query
@@ -247,49 +247,49 @@ paths:
           description: The type of M.2 slots.
           type: string
           enum:
-              - Sata 2
-              - Sata 3
-              - NVME
-              #add
+            - Sata 2
+            - Sata 3
+            - NVME
+            #add
           required: false
         - name: back_panel
           in: query
           type: string
           enum:
-              - USB 3.2 Gen 2x2 Type-C
-              - USB 3.2 Gen 2 Type-C
-              - USB 3.2 Gen 1 Type-C
-              - USB 3.2 Gen 1 Type-A
-              - USB 2.0 Type-A
-              - DisplayPort
-              - HDMI 1.0
-              - HDMI 2.0
-              - RJ-45 port
-              - Audio jacks
-              #add
+            - USB 3.2 Gen 2x2 Type-C
+            - USB 3.2 Gen 2 Type-C
+            - USB 3.2 Gen 1 Type-C
+            - USB 3.2 Gen 1 Type-A
+            - USB 2.0 Type-A
+            - DisplayPort
+            - HDMI 1.0
+            - HDMI 2.0
+            - RJ-45 port
+            - Audio jacks
+            #add
           required: false
         - name: motherboard_form_factor
           in: query
           type: string
           enum:
-              - Full ATX
-              - Mini ATX
-              - Micro ATX
-              - Flex ATX
-              - Mini ITX
-              - Em ITX
-              - Nano ITX
-              - Pico ITX
-              - Mobile ITX
-              - DTX
-              - Mini DTX
-              - SSI
-              - SSI EEB
-              - E-ATX
-              - Extended ATX
-              - SSI MEB
-              - BTX
-              - NLX
+            - Full ATX
+            - Mini ATX
+            - Micro ATX
+            - Flex ATX
+            - Mini ITX
+            - Em ITX
+            - Nano ITX
+            - Pico ITX
+            - Mobile ITX
+            - DTX
+            - Mini DTX
+            - SSI
+            - SSI EEB
+            - E-ATX
+            - Extended ATX
+            - SSI MEB
+            - BTX
+            - NLX
           required: false
         - name: color
           in: query
@@ -307,12 +307,12 @@ paths:
   /memory_sticks/:
     get:
       tags:
-      - memory sticks
+        - memory sticks
       summary: Get ram
       operationId: get_memory_sticks
       produces:
-      - application/xml
-      - application/json
+        - application/xml
+        - application/json
       parameters:
         - name: manufacturer
           in: query
@@ -323,11 +323,11 @@ paths:
           description: The DIMM type of the ram stick.
           type: string
           enum:
-              - DDR
-              - DDR2
-              - DDR3
-              - DDR4
-              - DDR5
+            - DDR
+            - DDR2
+            - DDR3
+            - DDR4
+            - DDR5
           required: false
         - name: max_ram_size
           in: query
@@ -353,18 +353,40 @@ paths:
   /graphics_cards/:
     get:
       tags:
-      - graphics cards
-      summary: Get graphics cards by manufacter
-      operationId: get_graphics_manufacter
+        - graphics cards
+      summary: Get graphics card
+      operationId: get_graphics_card
       parameters:
-        - name: GPU manufacter
+        - name: GPU manufacturer
           in: query
-          description: The manufacter of the GPU
+          description: The GPU manufacturer
           type: string
-          required: true
           enum:
-          - AMD
-          - NVIDIA
+            - AMD
+            - NVIDIA
+        - name: GPU generation
+          in: query
+          description: The GPU Generation
+          type: string
+          enum:
+            - Geforce RTX 3000
+            - Geforce RTX 2000
+            - Geforce GTX 1000
+            - Geforce GT
+            - Geforce
+            - Quadro
+            - Quadro RTX
+            - Radeon RX
+        - name: GPU Ports
+          in: query
+          description: The I/O GPU ports
+          type: string
+          enum:
+            - Type-C
+            - VGA
+            - DisplayPort
+            - MiniDisplayPort
+            - HDMI
       responses:
         200:
           description: success
@@ -377,20 +399,62 @@ paths:
   /storage_disk/:
     get:
       tags:
-      - storage
-      summary: Get storage Form Factor
-      operationId: get_storage_type
+        - storage
+      summary: Get storage
+      operationId: get_storage
       parameters:
-        - name: storage type
+        - name: Category
           in: query
-          description: The Form Factor of the storage
+          description: The storage Category
           type: string
           enum:
-          - M.2
-          - SATA
-          - mSATA
-          - PCIe
+            - SSD
+            - HDD
           required: true
+        - name: Producer
+          in: query
+          description: The storage Producer
+          type: string
+          enum:
+            - Corsair
+            - Gigabyte
+            - Intel
+            - Kingston
+            - MSI
+            - Samsung
+            - Seagate
+            - Toshiba
+            - Western Digital
+            - Crucial
+            - HyperX
+        - name: Storing Type
+          in: query
+          description: The storing type 
+          type: string
+          enum:
+            - M.2
+            - PCI-E
+            - 3.5
+            - 2.5
+        - name: Capacity
+          in: query
+          description: The storage Capacity
+          type: string
+          enum:
+            - 120GB
+            - 240GB
+            - 500GB
+            - 1TB
+            - 2TB
+            - 4TB
+            - 8TB
+        - name: Interface
+          in: query
+          description: The Storage Interface
+          type: string
+          enum:
+            - PCI-E NVMe
+            - SATA
       responses:
         200:
           description: success
@@ -403,81 +467,81 @@ paths:
   /power_supplies/:
     get:
       tags:
-      - power suplies
+        - power suplies
       summary: Get power supplies by potency
       operationId: get_power_supplies
       produces:
-      - application/xml
-      - application/json
+        - application/xml
+        - application/json
       parameters:
-      - name: min_potency
-        in: query
-        description: The minimum potency of the power supply.
-        type: integer
-        format: int32
-        required: false
-      - name: max_potency
-        in: query
-        description: The maximum potency of the power supply.
-        type: integer
-        format: int32
-        required: false
-      - name: manufacturer
-        in: query
-        description: The manufacturer of the power supply
-        type: string
-        required: false
-      - name: modular
-        in: query
-        description: The modularity of the power supply
-        type: string
-        enum:
-        - Full modular
-        - Semi modular
-        - Not modular
-        required: false
-      - name: form_factor
-        in: query
-        description: The form factor of the power supply
-        type: string
-        enum:
-        - ATX
-        - ATX / BTX
-        - ATX12V
-        - ATX12V / EPS12V
-        - Flex ATX
-        - Micro ATX
-        - Mini ATX
-        - Mini ITX
-        - SFX12V
-        - TFX12V
-        required: false
-      - name: color
-        in: query
-        description: The color of the power supply
-        type: string
-        required: false
-      - name: fan
-        in: query
-        description: Wether the power supply has a fan or Not
-        type: boolean
-        required: false
-      - name: connectors
-        in: query
-        description: The types of connectors of the power supply
-        type: string
-        required: false
-      - name: effeciency
-        in: query
-        type: string
-        enum:
-        - 80+
-        - 80+ Bronze
-        - 80+ Silver
-        - 80+ Gold
-        - 80+ Platinum
-        - 80+ Titanium
-        required: false
+        - name: min_potency
+          in: query
+          description: The minimum potency of the power supply.
+          type: integer
+          format: int32
+          required: false
+        - name: max_potency
+          in: query
+          description: The maximum potency of the power supply.
+          type: integer
+          format: int32
+          required: false
+        - name: manufacturer
+          in: query
+          description: The manufacturer of the power supply
+          type: string
+          required: false
+        - name: modular
+          in: query
+          description: The modularity of the power supply
+          type: string
+          enum:
+            - Full modular
+            - Semi modular
+            - Not modular
+          required: false
+        - name: form_factor
+          in: query
+          description: The form factor of the power supply
+          type: string
+          enum:
+            - ATX
+            - ATX / BTX
+            - ATX12V
+            - ATX12V / EPS12V
+            - Flex ATX
+            - Micro ATX
+            - Mini ATX
+            - Mini ITX
+            - SFX12V
+            - TFX12V
+          required: false
+        - name: color
+          in: query
+          description: The color of the power supply
+          type: string
+          required: false
+        - name: fan
+          in: query
+          description: Wether the power supply has a fan or Not
+          type: boolean
+          required: false
+        - name: connectors
+          in: query
+          description: The types of connectors of the power supply
+          type: string
+          required: false
+        - name: effeciency
+          in: query
+          type: string
+          enum:
+            - 80+
+            - 80+ Bronze
+            - 80+ Silver
+            - 80+ Gold
+            - 80+ Platinum
+            - 80+ Titanium
+          required: false
       responses:
         200:
           description: success
@@ -494,9 +558,9 @@ paths:
       summary: Get a list of fans
       operationId: get_fans
       produces:
-      - application/json
-      - application/xml
-      parameters: 
+        - application/json
+        - application/xml
+      parameters:
         - name: manufacturer
           in: query
           type: string
@@ -505,17 +569,17 @@ paths:
           in: query
           type: string
           enum:
-          - 40 mm
-          - 70 mm
-          - 80 mm
-          - 92 mm
-          - 95 mm
-          - 120 mm
-          - 180 mm
-          - 193 mm
-          - 200 mm
-          - 220 mm
-          - 230 mm
+            - 40 mm
+            - 70 mm
+            - 80 mm
+            - 92 mm
+            - 95 mm
+            - 120 mm
+            - 180 mm
+            - 193 mm
+            - 200 mm
+            - 220 mm
+            - 230 mm
           required: false
         - name: color
           in: query
@@ -533,43 +597,43 @@ paths:
           in: query
           type: string
           enum:
-          - RGB
-          - Addressable RGB
-          - Multicolor
-          - Single color
-          - Blue
-          - Green
-          - Orange
-          - Pink
-          - Purple
-          - Red
-          - UV
-          - UV Blue
-          - UV Green
-          - UV Red
-          - White
-          - Yellow
+            - RGB
+            - Addressable RGB
+            - Multicolor
+            - Single color
+            - Blue
+            - Green
+            - Orange
+            - Pink
+            - Purple
+            - Red
+            - UV
+            - UV Blue
+            - UV Green
+            - UV Red
+            - White
+            - Yellow
           required: false
         - name: connector
           in: query
           type: string
           enum:
-          - 3-pin
-          - 4-pin PWM
-          - 4-pin 12V RGB
-          - Proprietary RGB
-          - 3-pin 5V Addressable RGB
-          - Proprietary
-          - Proprietary PWM
+            - 3-pin
+            - 4-pin PWM
+            - 4-pin 12V RGB
+            - Proprietary RGB
+            - 3-pin 5V Addressable RGB
+            - Proprietary
+            - Proprietary PWM
           required: false
         - name: controler
           in: query
           type: string
           enum:
-          - Manual
-          - USB
-          - 12V RGB
-          - 5V Addressable RGB
+            - Manual
+            - USB
+            - 12V RGB
+            - 5V Addressable RGB
           required: false
       responses:
         200:
@@ -578,18 +642,18 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Part"
-        400: 
-          description: Invalid Parameters 
+        400:
+          description: Invalid Parameters
   /cases/:
     get:
       tags:
-      - cases
+        - cases
       summary: Get a list of cases
       operationId: get_cases
       produces:
-      - application/json
-      - application/xml
-      parameters: 
+        - application/json
+        - application/xml
+      parameters:
         - name: manufacturer
           in: query
           type: string
@@ -635,11 +699,11 @@ paths:
           in: query
           type: string
           enum:
-          - Acrylic
-          - Mesh
-          - Tinted Acrylic
-          - Tempered Glass
-          - Tinted Tempered Glass
+            - Acrylic
+            - Mesh
+            - Tinted Acrylic
+            - Tempered Glass
+            - Tinted Tempered Glass
           required: false
         - name: shroud
           in: query
@@ -649,11 +713,11 @@ paths:
           in: query
           type: string
           enum:
-          - USB 3.2 Gen 2x2 Type-C
-          - USB 3.2 Gen 2 Type-C
-          - USB 3.2 Gen 1 Type-C
-          - USB 3.2 Gen 1 Type-A
-          - USB 2.0 Type-A
+            - USB 3.2 Gen 2x2 Type-C
+            - USB 3.2 Gen 2 Type-C
+            - USB 3.2 Gen 1 Type-C
+            - USB 3.2 Gen 1 Type-A
+            - USB 2.0 Type-A
           required: false
         - name: min_graphics_card_length
           in: query
@@ -679,8 +743,8 @@ paths:
       summary: get a list of coolers
       operationId: get_coolers
       produces:
-      - application/json
-      - application/xml
+        - application/json
+        - application/xml
       parameters:
         - name: manufacturer
           in: query
@@ -714,12 +778,12 @@ paths:
           in: query
           type: string
           enum:
-          - 120 mm
-          - 140 mm
-          - 240 mm
-          - 280 mm
-          - 360 mm
-          - 420 mm
+            - 120 mm
+            - 140 mm
+            - 240 mm
+            - 280 mm
+            - 360 mm
+            - 420 mm
           required: false
         # water coolers?
       responses:
@@ -733,13 +797,13 @@ paths:
           description: Invalid Parameters
   /parts/:
     get:
-      tags: 
+      tags:
         - parts
       summary: search for parts
       operationId: search_part
       produces:
-      - application/json
-      - application/xml
+        - application/json
+        - application/xml
       parameters:
         - name: sku
           in: query
@@ -775,7 +839,7 @@ definitions:
       price:
         type: number
         format: double
-  CaseType: 
+  CaseType:
     type: string
     enum:
       - Full Tower
