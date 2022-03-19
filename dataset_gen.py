@@ -1,9 +1,10 @@
+from datetime import datetime
 import time
 from urllib import response
 from bs4 import BeautifulSoup
 import requests
 import json
-
+assismatica_dir = 'datasets/assismatica/'
 chiptec_components = 'https://www.chiptec.net/componentes-para-computadores#/componentes-para-computadores?limit=24'
 globaldata_components = 'https://www.globaldata.pt/componentes'
 pcdiga_components = 'https://www.pcdiga.com/componentes/'
@@ -31,6 +32,10 @@ pcdiga_headers = {
 }
 
 chip7_headers = {
+     'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
+}
+
+assismatica_headers = {
      'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
 }
 
@@ -73,6 +78,20 @@ chip_7_components_urls = [
     'https://www.chip7.pt/100-fontes-alimentacao',
 ]
 
+assismatica_components_urls = [
+    'https://www.assismatica.pt/pt/catalog/category/view/s/processadores/id/5283?p=',
+    'https://www.assismatica.pt/pt/catalog/category/view/s/memorias-ram/id/5297/?p=',
+    'https://www.assismatica.pt/pt/catalog/category/view/s/coolers-para-processador/id/5306/?p=',
+    'https://www.assismatica.pt/pt/catalog/category/view/s/motherboards/id/5541/?p=',
+    'https://www.assismatica.pt/pt/catalog/category/view/s/placas-graficas/id/5558/?p=',
+    'https://www.assismatica.pt/pt/catalog/category/view/s/placas-de-som/id/5316/?p=',
+    'https://www.assismatica.pt/pt/catalog/category/view/s/placas-diversas/id/5323/?p=',
+    'https://www.assismatica.pt/pt/catalog/category/view/s/caixas/id/5310/?p=',
+    'https://www.assismatica.pt/pt/catalog/category/view/s/fontes-de-alimentac-o/id/5290/?p=',
+    'https://www.assismatica.pt/pt/catalog/category/view/s/ventoinhas/id/5324/?p=',
+    'https://www.assismatica.pt/pt/catalog/category/view/s/drives-opticas/id/5937/?p='
+]
+
 def parse_chiptec():
     with open(dataset_directory+'chiptec.json', 'w') as f:
         item_dic = parse_items_chiptec(chiptec_components, 1)
@@ -111,6 +130,7 @@ def product_parse_chiptec(url):
     product = {}
     product['sku']   = soup.find_all('div', class_='sku')[0].p.text.split()[1]
     product['price'] = soup.find('div', class_='price-box').span.span.text.replace(' €', '')
+    product['timestamp'] = datetime.timestamp(datetime.now())
     
     return product
 
@@ -201,6 +221,7 @@ def parse_golbaldata_page(url='https://www.globaldata.pt/processador-intel-core-
     product = {}
     product['sku'] = soup.find('div', class_='ck-product-sku-ean-warranty-info__item').text.split()[1]
     product['price'] = soup.find('span', class_='price__amount').text.replace(' €', '').replace('\n', '')
+    product['timestamp'] = datetime.timestamp(datetime.now())
     
     print(product)
     
@@ -224,19 +245,55 @@ def parse_chip7_page(url='https://www.chip7.pt/intel/97451-intel-core-i3-10105f-
     product = {}
     product['sku'] = soup.find('span', itemprop='sku').text
     product['price'] = soup.find('div', class_='price').span.text.replace(' €', '')
+    product['timestamp'] = datetime.timestamp(datetime.now())
+    
     with open('test9.html', 'w') as f:
         f.write(product['price'])
    
-if __name__ == '__main__':
-    response = requests.get(chip_7_components_urls[1], headers=chip7_headers)
-    print(response)
-    soup = BeautifulSoup(response.text, 'lxml')
+def parse_assismatica_components():
     
-    url_container_list = soup.find('div', class_='ais-hits--item')
-    url = url_container_list[0]
-    print(url)
-    '''
     url_list = []
-    for url_container in url_container_list:
-        url_list.append()
-        '''
+    for component_list_url in assismatica_components_urls:
+        next_separater_found = False
+        page_index=0
+        while not next_separater_found:
+            response = requests.get(component_list_url+str(page_index), headers=assismatica_headers)
+            print(response)
+            soup = BeautifulSoup(response.text, 'lxml')
+            page_index += page_index
+
+            url_container_list = soup.find_all('div', class_='product-item-info')
+            
+            for url_container in url_container_list:
+                if not url_container.a.has_attr('href'):
+                    next_separater_found = True
+                    break
+                url=url_container.a['href']
+                url_list.append(url)
+                
+    for url in url_list:
+        print('retrieving: '+url)
+        parse_assismatica_page(url)
+
+def parse_assismatica_page(url='https://www.assismatica.pt/pt/catalog/product/view/id/1367117/s/bx80701g5925-intel-s1200-celeron-g5925-box-2x3-6-58w-g/category/5283/'):
+    response= requests.get(url, headers=assismatica_headers)
+    print(response)
+    soup= BeautifulSoup(response.text, 'lxml')
+    
+    product = {}
+    product['sku'] = soup.find('div', class_='sku').div.text
+    product['ean'] = soup.find('div', class_='ean').div.text
+    product['price'] = soup.find('span', class_='price-container').span.span.text.replace('\u00a0€', '')
+    product['timestamp'] = datetime.timestamp(datetime.now())
+    
+    dir=assismatica_dir+product['ean']+'.json'
+    with open(dir, 'w') as f:
+        json.dump(product, fp=f)
+        
+if __name__ == '__main__':
+    response= requests.get('https://www.clickfiel.pt/1/72/Caixas-de-Computador', headers=assismatica_headers)
+    print(response)
+    soup= BeautifulSoup(response.text, 'lxml')
+    with open('test_3.html', 'w') as f:
+        f.write(soup.find('div', class_='area_dir_prods').prettify())
+    

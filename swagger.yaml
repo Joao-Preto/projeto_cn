@@ -104,21 +104,27 @@ paths:
               - DDR4
               - DDR5
           required: false
+        - name: min_ram_size
+          in: query
+          description: The minimum amount of the ram processor can use.
+          type: integer
+          format: int32
+          required: false
         - name: max_ram_size
           in: query
           description: The maximum amount of the ram processor can use.
           type: integer
           format: int32
           required: false
-        - name: max_ram_speed
-          in: query
-          description: The maximum ram speed the processor can use(Ram Stick Speed may be higher).
-          type: integer
-          format: int32
-          required: false
         - name: min_ram_speed
           in: query
           description: The minimum ram speed the processor needs to run(Ram Stick Speed can't be lower).
+          type: integer
+          format: int32
+          required: false
+        - name: max_ram_speed
+          in: query
+          description: The maximum ram speed the processor can use(Ram Stick Speed may be higher).
           type: integer
           format: int32
           required: false
