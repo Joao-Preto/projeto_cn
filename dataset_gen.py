@@ -5,8 +5,11 @@ from urllib import response
 from bs4 import BeautifulSoup
 import requests
 import json
+
+chiptec_dir     = 'datasets/chiptec/'
 assismatica_dir = 'datasets/assismatica/'
 clickfield_dir  = 'datasets/clickfield/' 
+
 chiptec_components = 'https://www.chiptec.net/componentes-para-computadores#/componentes-para-computadores?limit=24'
 globaldata_components = 'https://www.globaldata.pt/componentes'
 pcdiga_components = 'https://www.pcdiga.com/componentes/'
@@ -138,6 +141,24 @@ def product_parse_chiptec(url):
     product['sku']   = soup.find_all('div', class_='sku')[0].p.text.split()[1]
     product['price'] = soup.find('div', class_='price-box').span.span.text.replace(' €', '')
     product['timestamp'] = datetime.timestamp(datetime.now())
+    
+    return product
+
+def parse_chiptec_page(url='https://www.chiptec.net/componentes-para-computadores/processadores/amd-socket-am4/amd-ryzen-5-5600g-3-9ghz-19mb-box.html', prod_num = None):
+    response = requests.get(url, headers=headers_chiptec)
+    print(response)
+    soup = BeautifulSoup(response.text, 'lxml')
+    
+    product = {}
+    product['sku']   = soup.find_all('div', class_='sku')[0].p.text.split()[1]
+    product['price'] = soup.find('div', class_='price-box').span.span.text.replace(' €', '')
+    product['timestamp'] = datetime.timestamp(datetime.now())
+    
+    if prod_num is None:
+        print(product)
+    else:
+        with open(chiptec_dir+str(prod_num)+'.json','w') as f:
+            json.dump(product, fp=f)
     
     return product
 

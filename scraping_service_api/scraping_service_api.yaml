@@ -20,6 +20,7 @@ paths:
       tags:
       - Admin Methods
       summary: update price values in the system
+      operationId: scraping_handler.update_part_values
       parameters: []
       responses:
         200:
@@ -38,6 +39,7 @@ paths:
       tags:
       - Admin Methods
       summary: get request status
+      operationId: scraping_handler.get_request_status
       parameters:
       - name: request_id
         in: path
@@ -59,6 +61,8 @@ paths:
     get:
       tags:
       - User Methods
+      summary: get part information by sku
+      operationId: scraping_handler.get_part_by_sku
       parameters:
       - name: sku
         in: path
@@ -80,6 +84,8 @@ paths:
     get:
       tags:
       - User Methods
+      summary: get part information by sku
+      operationId: scraping_handler.get_part_by_ean
       parameters:
       - name: ean
         in: path
