@@ -1,13 +1,16 @@
 from datetime import datetime
+from itertools import product
 import time
 from urllib import response
 from bs4 import BeautifulSoup
 import requests
 import json
 assismatica_dir = 'datasets/assismatica/'
+clickfield_dir  = 'datasets/clickfield/' 
 chiptec_components = 'https://www.chiptec.net/componentes-para-computadores#/componentes-para-computadores?limit=24'
 globaldata_components = 'https://www.globaldata.pt/componentes'
 pcdiga_components = 'https://www.pcdiga.com/componentes/'
+clickfield_components = 'https://www.clickfiel.pt/1/353/Componentes'
 headers_chiptec = { 'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
            #,'accept-language' : 'en-US,en'
            #,'referer' : 'https://www.pcdiga.com/componentes/processadores'
@@ -36,6 +39,10 @@ chip7_headers = {
 }
 
 assismatica_headers = {
+     'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
+}
+
+clickfield_headers = {
      'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
 }
 
@@ -155,9 +162,6 @@ def parse_pcpartpicker_page(url='https://pcpartpicker.com/product/g94BD3/amd-ryz
         else:
             spec = spec_paragraph.text.replace('\n', '')
             spec_list[spec_name]= spec
-        
-    with open('test5.json', 'w') as f:
-        f.write(str(spec_list))
         
     return spec_list
 
@@ -289,11 +293,45 @@ def parse_assismatica_page(url='https://www.assismatica.pt/pt/catalog/product/vi
     dir=assismatica_dir+product['ean']+'.json'
     with open(dir, 'w') as f:
         json.dump(product, fp=f)
+
+def parse_clickfield_components():
+    last_page_parsed = False
+    components_index = 1
+    parsed_items = 0
+    while not last_page_parsed:
+        print('parsing page '+str(components_index))
+        response = requests.get(clickfield_components+'?ordem=3&pagina='+str(components_index), headers=clickfield_headers)
+        print(response)
+        soup = BeautifulSoup(response.text, 'lxml')
+        item_url_list_soup = soup.find_all('div', class_='product-item')
+        item_url_list = list(map(lambda url_soup: url_soup.div.a['href'], item_url_list_soup))
+        for item_url in item_url_list:
+            parsed_items = parsed_items + 1
+            parse_clickfield_page(item_url, parsed_items)
+            
+        next_button_url_soup = soup.find('li', class_='pagination-next').a
+        if next_button_url_soup is None:
+            last_page_parsed = True
+        components_index = components_index  + 1
+    print(str(parsed_items)+' items parsed!')
+    
+def parse_clickfield_page(url='https://www.clickfiel.pt/2/9562/Processador-Intel-Core-i3-10100F-4-Core-3-6GHz', page=None):
+    print('parsing item '+str(page))
+    response = requests.get(url, clickfield_headers)
+    print(response)
+    soup = BeautifulSoup(response.text, 'lxml')
+    
+    product = {}
+    product['sku'] = soup.find('div', class_='referencia-ficha-produto').text.split()[1]
+    price_div = soup.find('div', class_='price').div
+    product['price'] = price_div.find('span', class_='whole').text.replace('€', '') + price_div.find('span', class_='fraction').text
+    product['timestamp'] = datetime.timestamp(datetime.now())
+    
+    if page is not None:
+        with open(clickfield_dir+str(page)+'.json', 'w') as f:
+            json.dump(product, fp=f)
+    else:
+        print(product)
         
 if __name__ == '__main__':
-    response= requests.get('https://www.clickfiel.pt/1/72/Caixas-de-Computador', headers=assismatica_headers)
-    print(response)
-    soup= BeautifulSoup(response.text, 'lxml')
-    with open('test_3.html', 'w') as f:
-        f.write(soup.find('div', class_='area_dir_prods').prettify())
-    
+    parse_clickfield_components()
