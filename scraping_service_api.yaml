@@ -1,0 +1,127 @@
+openapi: 3.0.1
+info:
+  title: Scrapping Service
+  description: This sevice provides up to date information regarding computer component prices in major technology shops in Portugal
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+tags:
+- name: Admin Methods
+  description: The methods accessible to administrators
+- name: User Methods
+  description: The methods accessible to users
+
+paths:
+  /admin/:
+    get:
+      tags:
+      - Admin Methods
+      summary: update price values in the system
+      parameters: []
+      responses:
+        200:
+          description: request received successfully
+          content: #request id
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+        401:
+          description: request denied
+  /admin/{request_id}:
+    get:
+      tags:
+      - Admin Methods
+      summary: get request status
+      parameters:
+      - name: request_id
+        in: path
+        description: id of the request to check
+        required: True
+        schema:
+          type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+  /User/{sku}:
+    get:
+      tags:
+      - User Methods
+      parameters:
+      - name: sku
+        in: path
+        description: the sku of the part
+        required: True
+        schema:
+          type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartPriceInformation'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PartPriceInformation'
+  /User/{ean}:
+    get:
+      tags:
+      - User Methods
+      parameters:
+      - name: ean
+        in: path
+        description: the ean of the part
+        required: True
+        schema:
+          type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartPriceInformation'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PartPriceInformation'
+              
+components:
+  schemas:
+    PartPriceInformation:
+      type: object
+      properties:
+        part_info:
+          type: array
+          items:
+            $ref: '#/components/schemas/Atribute'
+        price_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+    Atribute:
+      type: object
+      properties:
+        atribute:
+          type: string
+        value: 
+          type: string
+    Price:
+      type: object
+      properties:
+        shop:
+          type: string
+        value:
+          type: number
