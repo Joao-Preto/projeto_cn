@@ -158,6 +158,7 @@ def parse_chiptec_components():
             item_url = item.find('a')['href']
             parse_chiptec_page(item_url, item_index)
             item_index = item_index + 1
+            time.sleep(1)
         
         last_link= soup.find('div', class_='toolbar-bottom').find('ol').find_all('li')[-1].find('a', class_='next')
         if last_link is None:
@@ -427,6 +428,8 @@ def parse_clickfield_page(url='https://www.clickfiel.pt/2/9562/Processador-Intel
         print(product)
         
 if __name__ == '__main__':
+    parse_chiptec_components()
+    '''
     skiped = []
     with open('d') as lines:
         for line in lines:
@@ -446,3 +449,4 @@ if __name__ == '__main__':
             print(treated_line)
             time.sleep(70)
         time.sleep(1)
+        '''
