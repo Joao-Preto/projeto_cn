@@ -1,16 +1,15 @@
 from datetime import datetime
-from itertools import product
 import time
-from urllib import response
 from bs4 import BeautifulSoup
 import requests
 import json
 
 chiptec_dir     = 'datasets/chiptec/'
 assismatica_dir = 'datasets/assismatica/'
-clickfield_dir  = 'datasets/clickfield/' 
+clickfield_dir  = 'datasets/clickfield/'
+globaldata_dir  = 'datasets/globaldata/'
 
-chiptec_components = 'https://www.chiptec.net/componentes-para-computadores#/componentes-para-computadores?limit=24'
+chiptec_components = 'https://www.chiptec.net/componentes-para-computadores#/componentes-para-computadores'
 globaldata_components = 'https://www.globaldata.pt/componentes'
 pcdiga_components = 'https://www.pcdiga.com/componentes/'
 clickfield_components = 'https://www.clickfiel.pt/1/353/Componentes'
@@ -131,7 +130,6 @@ def parse_items_chiptec(url, pagina, list=[]):
 
     return list
     
-        
 def product_parse_chiptec(url):
     html_text = requests.get(url, headers=headers_chiptec)
     print(html_text)
@@ -144,6 +142,31 @@ def product_parse_chiptec(url):
     
     return product
 
+def parse_chiptec_components():
+    last_page_parsed = False
+    components_index = 1
+    item_index = 1
+    while not last_page_parsed:
+        print('component page: ' + str(components_index))
+        response = requests.get(chiptec_components+'?p='+str(components_index), headers=headers_chiptec)
+        print(response)
+        soup = BeautifulSoup(response.text, 'lxml')
+        
+        item_list = soup.find('ul', class_='products-grid box').find_all('li', class_='item')
+        for item in item_list:
+            print('parsing item: ' + str(item_index))
+            item_url = item.find('a')['href']
+            parse_chiptec_page(item_url, item_index)
+            item_index = item_index + 1
+        
+        last_link= soup.find('div', class_='toolbar-bottom').find('ol').find_all('li')[-1].find('a', class_='next')
+        if last_link is None:
+            last_page_parsed = True
+        components_index = components_index + 1
+    print(str(item_index)+' items parsed')
+            
+    
+            
 def parse_chiptec_page(url='https://www.chiptec.net/componentes-para-computadores/processadores/amd-socket-am4/amd-ryzen-5-5600g-3-9ghz-19mb-box.html', prod_num = None):
     response = requests.get(url, headers=headers_chiptec)
     print(response)
@@ -207,7 +230,7 @@ def parse_globaldata_products(url=globaldata_components):
         child_num = 1
         for child in filtered_list:
             print(str(page)+', '+str(child_num))
-
+            
             local_url = child.find('div', class_='col').a['href']
             part_url = 'https://www.globaldata.pt'+local_url
             
@@ -237,19 +260,69 @@ def parse_globaldata_products(url=globaldata_components):
     with open(dataset_directory+'globaldata.json','w') as f:
         json.dump(product__info_list, fp=f)
     
-
-def parse_golbaldata_page(url='https://www.globaldata.pt/processador-intel-core-i3-10100f-4-core-36ghz-43ghz-6mb-skt1200-bx8070110100f'):
-    http = requests.get(url, headers=globaldata_headers, allow_redirects=False)
-    print(http)
-    soup = BeautifulSoup(http.text, 'lxml')
+def parse_globaldata_components():
+    last_page_parsed = False
+    components_index = 1
+    item_index = 1
+    skiped_urls = []
+    while not last_page_parsed:
+        print('component page: '+str(components_index))
+        response = requests.get(globaldata_components+'?page='+str(components_index), headers=globaldata_headers)
+        print(response)
+        soup = BeautifulSoup(response.text, 'lxml')
+        
+        product_wraper_soup = soup.find('div', class_='js-product-list')
+        url_list = map(lambda child: 'https://www.globaldata.pt'+child.find('div', class_='col').a['href'], filter(lambda tag: tag.name == 'div',list(filter(lambda content: content != '\n', product_wraper_soup.contents))))
+        
+        for url in url_list:
+            print('parsing item:'+str(item_index))
+            
+            try:
+                parse_golbaldata_page(url)
+            except:
+                print(url)
+                skiped_urls.append(url)
+            
+            item_index = item_index+1
+            time.sleep(1)
+        
+        next_url = soup.find('a', class_='pagination__step--next')['href']
+        if next_url == '#':
+            last_page_parsed = True
+        else:
+            components_index = components_index + 1
+        
+    count = 1
+    for url in skiped_urls:
+        try:
+            print('recovering product: ' + str(count))
+            parse_globaldata_page(url)
+            count=count+1
+        except:
+            print(url)
+        time.sleep(1)
+    
+    print(str(count)+' products recovered!')
+        
+                
+        
+def parse_globaldata_page(url='https://www.globaldata.pt/processador-intel-core-i3-10100f-4-core-36ghz-43ghz-6mb-skt1200-bx8070110100f', save=False):
+    response = requests.get(url, headers=globaldata_headers, allow_redirects=False)
+    print(response)
+    soup = BeautifulSoup(response.text, 'lxml')
     
     product = {}
     product['sku'] = soup.find('div', class_='ck-product-sku-ean-warranty-info__item').text.split()[1]
+    product['ean'] = soup.find_all('div', class_='ck-product-sku-ean-warranty-info__item')[1].text.split()[1]
     product['price'] = soup.find('span', class_='price__amount').text.replace(' €', '').replace('\n', '')
     product['timestamp'] = datetime.timestamp(datetime.now())
     
-    print(product)
-    
+    if save:
+        with open(globaldata_dir+product['ean']+'.json','w') as f:
+            json.dump(product, fp=f)
+    else:
+        print(product)
+        
     return product
 
 def parse_chip7_components():
@@ -276,7 +349,6 @@ def parse_chip7_page(url='https://www.chip7.pt/intel/97451-intel-core-i3-10105f-
         f.write(product['price'])
    
 def parse_assismatica_components():
-    
     url_list = []
     for component_list_url in assismatica_components_urls:
         next_separater_found = False
@@ -355,4 +427,22 @@ def parse_clickfield_page(url='https://www.clickfiel.pt/2/9562/Processador-Intel
         print(product)
         
 if __name__ == '__main__':
-    parse_clickfield_components()
+    skiped = []
+    with open('d') as lines:
+        for line in lines:
+            treated_line = line.replace('\n', '')
+            try:
+                parse_globaldata_page(treated_line, True)
+            except:
+                print(treated_line)
+                time.sleep(70)
+                skiped.append(treated_line)
+            time.sleep(1)
+    print('cleaning')
+    for url in skiped:
+        try:
+            parse_globaldata_page(treated_line, True)
+        except:
+            print(treated_line)
+            time.sleep(70)
+        time.sleep(1)
