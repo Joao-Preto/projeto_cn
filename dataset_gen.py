@@ -148,7 +148,7 @@ def parse_chiptec_components():
     item_index = 1
     while not last_page_parsed:
         print('component page: ' + str(components_index))
-        response = requests.get(chiptec_components+'?p='+str(components_index), headers=headers_chiptec)
+        response = requests.get(chiptec_components+'?p='+str(components_index), headers=headers_chiptec, allow_redirects=False)
         print(response)
         soup = BeautifulSoup(response.text, 'lxml')
         
@@ -156,9 +156,12 @@ def parse_chiptec_components():
         for item in item_list:
             print('parsing item: ' + str(item_index))
             item_url = item.find('a')['href']
-            parse_chiptec_page(item_url, item_index)
+            try:
+                parse_chiptec_page(item_url, item_index)
+            except:
+                print(item_url)
             item_index = item_index + 1
-            time.sleep(1)
+            #time.sleep(1)
         
         last_link= soup.find('div', class_='toolbar-bottom').find('ol').find_all('li')[-1].find('a', class_='next')
         if last_link is None:
@@ -169,7 +172,7 @@ def parse_chiptec_components():
     
             
 def parse_chiptec_page(url='https://www.chiptec.net/componentes-para-computadores/processadores/amd-socket-am4/amd-ryzen-5-5600g-3-9ghz-19mb-box.html', prod_num = None):
-    response = requests.get(url, headers=headers_chiptec)
+    response = requests.get(url, headers=headers_chiptec, allow_redirects=False)
     print(response)
     soup = BeautifulSoup(response.text, 'lxml')
     
@@ -249,7 +252,7 @@ def parse_globaldata_products(url=globaldata_components):
         for url in skiped_urls:
             try:
                 print('recovering product: ' + str(count))
-                parsed_page = parse_golbaldata_page(url)
+                parsed_page = parse_globaldata_page(url)
                 product__info_list.append(parsed_page)
                 count=count+1
             except:

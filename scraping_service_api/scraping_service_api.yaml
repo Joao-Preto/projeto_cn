@@ -34,10 +34,10 @@ paths:
                 type: string
         401:
           description: request denied
-  /admin/{request_id}:
+  /user/{request_id}:
     get:
       tags:
-      - Admin Methods
+      - User Methods
       summary: get request status
       operationId: scraping_handler.get_request_status
       parameters:
@@ -57,7 +57,7 @@ paths:
             application/xml:
               schema:
                 type: string
-  /User/{sku}:
+  /user/{sku}:
     get:
       tags:
       - User Methods
@@ -80,7 +80,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/PartPriceInformation'
-  /User/{ean}:
+  /user/{ean}:
     get:
       tags:
       - User Methods
