@@ -886,9 +886,28 @@ components:
       properties:
         sku:
           type: string
-        price:
-          type: number
-          format: double
+        part_info:
+          type: array
+          items:
+            $ref: '#/components/schemas/Atribute'
+        prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+    Atribute:
+      type: object
+      properties:
+        atribute:
+          type: string
+        value:
+          type: string
+    Price:
+      type: object
+      properties:
+        shop:
+          type: string
+        value:
+          type: string
     CaseType:
       type: string
       enum:
