@@ -1,0 +1,124 @@
+openapi: 3.0.1
+info:
+  title: Scrapping Service
+  description: This sevice provides up to date information regarding computer component prices in major technology shops in Portugal
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+tags:
+- name: Configuration 
+  description: Create, update and get the configurations
+
+paths:
+  /configuration/:
+    post:
+      tags:
+      - Configuration 
+      summary: create configuration 
+      operationId: configuration_handler.create_configuration
+      requestBody:
+        description: configuration
+        required: True
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Configuration'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+ 
+  /configuration/{configurationId}:
+    get:
+      tags:
+      - Configuration
+      summary: get configuration information by id
+      operationId: configuration_handler.get_configuration_by_id
+      parameters:
+      - name: configurationId
+        in: path
+        description: the id of the configuration
+        required: True
+        schema:
+          type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Configuration'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Configuration'   
+    put:
+      tags:
+      - Configuration 
+      summary: update configuration
+      operationId: scraping_handler.update_configuration
+      parameters:
+      - name: configurationId
+        in: path
+        description: the id of the configuration
+        required: True
+        schema:
+          type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+  /configuration/{userId}:
+    get:
+      tags:
+      - Configuration
+      summary: get configuration information by user id
+      operationId: configuration_handler.get_configuration_by_user_id
+      parameters:
+      - name: userId
+        in: path
+        description: the id of the user
+        required: True
+        schema:
+          type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Configuration'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Configuration'
+components:
+  schemas:
+    Configuration:
+      type: object
+      properties:
+        parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Part'
+       
+    Part:
+      type: object
+      properties:
+        partType:
+          type: string
+        partSku: 
+          type: string
