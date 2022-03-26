@@ -282,7 +282,7 @@ def parse_globaldata_components():
             print('parsing item:'+str(item_index))
             
             try:
-                parse_golbaldata_page(url)
+                parse_globaldata_page(url)
             except:
                 print(url)
                 skiped_urls.append(url)
@@ -335,9 +335,6 @@ def parse_chip7_components():
         response = requests.get(coponent_list_page_url, headers=chip7_headers)
         print(response)
         soup = BeautifulSoup(response.text, 'lxml')
-        
-        
-        pass
 
 def parse_chip7_page(url='https://www.chip7.pt/intel/97451-intel-core-i3-10105f-processador-37-ghz-6-mb-smart-cache-caixa.html'):
     response = requests.get(url, headers=chip7_headers)
