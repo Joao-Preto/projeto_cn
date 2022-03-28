@@ -5,7 +5,7 @@ import connexion
 app = connexion.App(__name__, specification_dir="./")
 
 # read the swagger.yml file to configure the endpoints
-app.add_api("scraping_service_api.yaml")
+app.add_api("configuration_api.yaml")
 
 # Create a URL route in our application for "/"
 @app.route("/")
