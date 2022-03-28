@@ -7,7 +7,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: 1.1.0
 tags:
 - name: Admin Methods
   description: The methods accessible to administrators
@@ -20,7 +20,7 @@ paths:
       tags:
       - Admin Methods
       summary: update price values in the system
-      operationId: scraping_handler.update_part_values
+      operationId: scraping_handler.update_part_data
       parameters: []
       responses:
         200:
@@ -34,7 +34,7 @@ paths:
                 type: string
         401:
           description: request denied
-  /user/{request_id}:
+  /admin/{request_id}:
     get:
       tags:
       - User Methods
