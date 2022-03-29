@@ -1,0 +1,53 @@
+openapi: 3.0.1
+info:
+  title: Scrapping Service
+  description: This sevice provides up to date information regarding computer component prices in major technology shops in Portugal
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+tags:
+- name: Part Information
+  description: Methods for accessing information on pc parts
+paths:
+  /parts/{sku}:
+    get:
+      tags:
+        - Part Information
+      summary: Get Information about a pc part
+      operationId: get_info
+      parameters:
+      - name: sku
+        in: path
+        description: pc part number
+        required: True
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartPriceInformation'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PartPriceInformation'
+components:
+  schemas:
+    PartInformation:
+      type: object
+      properties:
+        atribute_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Atribute'
+    Atribute:
+      type: object
+      properties:
+        atribute:
+          type: string
+        value: 
+          type: string
