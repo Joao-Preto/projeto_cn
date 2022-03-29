@@ -12,12 +12,37 @@ tags:
 - name: Part Information
   description: Methods for accessing information on pc parts
 paths:
+  /parts:
+    get:
+      tags:
+        - Part Information
+      summary: Get a list of part sku's that fit the parameters
+      operationId: pcpartpicker_data_handler.get_parts
+      parameters: 
+      - name: query_parameters
+        in: query
+        schema:
+          $ref: '#/components/schemas/PartInformation'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+            application/xml:
+              schema:
+                type: array
+                items:
+                  type: string
   /parts/{sku}:
     get:
       tags:
         - Part Information
       summary: Get Information about a pc part
-      operationId: get_info
+      operationId: pcpartpicker_data_handler.get_info
       parameters:
       - name: sku
         in: path

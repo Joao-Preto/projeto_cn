@@ -332,7 +332,7 @@ paths:
           - DDR3
           - DDR4
           - DDR5
-      - name: max_ram_size
+      - name: min_ram_size
         in: query
         description: The amount of ram of the stick.
         schema:
@@ -368,7 +368,7 @@ paths:
       summary: Get graphics card
       operationId: get_graphics_card
       parameters:
-      - name: GPU manufacturer
+      - name: manufacturer
         in: query
         description: The GPU manufacturer
         schema:
@@ -454,8 +454,8 @@ paths:
           enum:
           - M.2
           - PCI-E
-          - "3.5"
-          - "2.5"
+          - '3.5'
+          - '2.5'
       - name: Capacity
         in: query
         description: The storage Capacity

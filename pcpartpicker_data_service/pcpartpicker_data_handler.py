@@ -8,12 +8,19 @@ pcpartpicker_col = pcpartpicker_db['pc_part_picker_data']
 
 def get_info(sku):
     sku_query = {'sku': sku}
-    part_data = pcpartpicker_col.find(sku_query)
-    if part_data.count() > 0:
+    part_data = pcpartpicker_col.find_one(sku_query)
+    if part_data:
         return part_data[0]
     part = parse_pcpartpicker_page(sku)
     pcpartpicker_col.insert_one(part)
     return part
+
+def get_parts(query_parameters):
+    parts = pcpartpicker_col.find(query_parameters)
+    part_list = []
+    for part in parts:
+        part_list.append(part['sku'])
+    return part_list
     
 def parse_pcpartpicker_page(sku):
     url = 'pcpartpicker.com/search/?q='+sku
