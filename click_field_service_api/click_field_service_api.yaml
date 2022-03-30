@@ -17,7 +17,7 @@ tags:
 - name: Part Prices
   description: Part prices from clickfield
 paths:
-  /parts/{sku_list}:
+  /parts/:
     get:
       tags:
       - Part Prices
@@ -25,7 +25,7 @@ paths:
       operationId: click_field_handler.get_parts
       parameters:
       - name: sku_list
-        in: path
+        in: query
         required: true
         schema:
           type: array

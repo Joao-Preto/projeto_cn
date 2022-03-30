@@ -1,4 +1,3 @@
-from http import client
 from pymongo import MongoClient
 
 client = MongoClient('172.17.0.3:27017')

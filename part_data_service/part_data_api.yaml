@@ -1,0 +1,941 @@
+openapi: 3.0.1
+info:
+  title: Swagger Petstore
+  description: This is a sample server Petstore server.  You can find out more about     Swagger
+    at [http://swagger.io](http://swagger.io) or on [irc.freenode.net,
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://petstore.swagger.io/api
+- url: http://petstore.swagger.io/api
+tags:
+- name: processors
+  description: Everything about Processors
+- name: motherboards
+  description: Everything about Motherboards
+- name: memory sticks
+  description: Everything about Ram Memory
+- name: graphics cards
+  description: Everything about Graphics Cards
+- name: storage
+  description: Everything about Storage disks
+- name: power suplies
+  description: Everything about Power Suplies
+- name: fans
+  description: Everything about Fans
+- name: cases
+  description: Everything about Computer Cases
+- name: coolers
+  description: Everything about Cooling
+- name: parts
+  description: search for parts
+paths:
+  /processors/:
+    get:
+      tags:
+      - processors
+      summary: Get processors
+      operationId: part_data_handler.get_processors
+      parameters:
+      - name: manufacturer
+        in: query
+        schema:
+          type: string
+          enum:
+          - Intel
+          - AMD
+      - name: socket
+        in: query
+        schema:
+          type: string
+          enum:
+          - LGA1151
+          - LGA1200
+          - LGA1700
+          - LGA2066
+          - TR4
+          - sTRX4
+          - SWRX8
+          - AM4
+      - name: series
+        in: query
+        schema:
+          type: string
+          enum:
+          - Intel Pentuim
+          - Intel Celeron
+          - Intel Core i3
+          - Intel Core i5
+          - Intel Core i7
+          - Intel Core i9
+          - AMD Ryzen 5
+          - AMD Ryzen 7
+          - AMD Ryzen 9
+          - AMD Ryzen Threadripper
+          - AMD Ryzen Threadripper Pro
+      - name: min_clock_speed
+        in: query
+        description: The base clock speed of the processor.
+        schema:
+          type: integer
+          format: int32
+      - name: max_clock_speed
+        in: query
+        description: The base clock speed of the processor.
+        schema:
+          type: integer
+          format: int32
+      - name: ram_type
+        in: query
+        description: The ram type usable by the processor.
+        schema:
+          type: string
+          enum:
+          - DDR
+          - DDR2
+          - DDR3
+          - DDR4
+          - DDR5
+      - name: min_ram_size
+        in: query
+        description: The minimum amount of the ram processor can use.
+        schema:
+          type: integer
+          format: int32
+      - name: max_ram_size
+        in: query
+        description: The maximum amount of the ram processor can use.
+        schema:
+          type: integer
+          format: int32
+      - name: min_ram_speed
+        in: query
+        description: The minimum ram speed the processor needs to run(Ram Stick Speed
+          can't be lower).
+        schema:
+          type: integer
+          format: int32
+      - name: max_ram_speed
+        in: query
+        description: The maximum ram speed the processor can use(Ram Stick Speed may
+          be higher).
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: success
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+        400:
+          description: Invalid Parameters
+          content: {}
+  /motherboards/:
+    get:
+      tags:
+      - motherboards
+      summary: Get a list of motherboards
+      operationId: part_data_handler.get_motherboards
+      parameters:
+      - name: manufacturer
+        in: query
+        schema:
+          type: string
+      - name: cpu_manufacturer
+        in: query
+        schema:
+          type: string
+          enum:
+          - Intel
+          - AMD
+      - name: socket
+        in: query
+        schema:
+          type: string
+          enum:
+          - LGA1151
+          - LGA1200
+          - LGA1700
+          - LGA2066
+          - TR4
+          - sTRX4
+          - SWRX8
+          - AM4
+      - name: ram_type
+        in: query
+        description: The ram type usable by the processor.
+        schema:
+          type: string
+          enum:
+          - DDR
+          - DDR2
+          - DDR3
+          - DDR4
+          - DDR5
+      - name: max_ram_size
+        in: query
+        description: The maximum amount of the ram processor can use(used when motherboard
+          is selected first).
+        schema:
+          type: integer
+          format: int32
+      - name: max_ram_speed
+        in: query
+        description: The maximum ram speed the processor can use(Ram Stick Speed may
+          be higher).(used when motherboard is selected first)
+        schema:
+          type: integer
+          format: int32
+      - name: min_ram_size
+        in: query
+        description: The maximum amount of the ram processor need(used when ram/processor
+          is selected first).
+        schema:
+          type: integer
+          format: int32
+      - name: min_ram_speed
+        in: query
+        description: The maximum ram speed the processor can use(Ram Stick Speed may
+          be higher).(used when ram/processor is selected first)
+        schema:
+          type: integer
+          format: int32
+      - name: PCIe_slots
+        in: query
+        description: The amount of PCIe slots.
+        schema:
+          type: integer
+          format: int32
+      - name: PCIe_slots_type
+        in: query
+        description: The type of PCIe slots.
+        schema:
+          type: string
+          enum:
+          - PCIe 4.0 x16
+          - PCIe 3.0 x16
+      - name: sata_slots
+        in: query
+        description: The amount of Sata slots.
+        schema:
+          type: integer
+          format: int32
+      - name: sata_slots_type
+        in: query
+        description: The type of Sata slots.
+        schema:
+          type: string
+          enum:
+          - Sata 2
+          - Sata 3
+      - name: m2_slots
+        in: query
+        description: The amount of M.2 slots.
+        schema:
+          type: integer
+          format: int32
+      - name: m2_slots_type
+        in: query
+        description: The type of M.2 slots.
+        schema:
+          type: string
+          enum:
+          - Sata 2
+          - Sata 3
+          - NVME
+      - name: back_panel
+        in: query
+        schema:
+          type: string
+          enum:
+          - USB 3.2 Gen 2x2 Type-C
+          - USB 3.2 Gen 2 Type-C
+          - USB 3.2 Gen 1 Type-C
+          - USB 3.2 Gen 1 Type-A
+          - USB 2.0 Type-A
+          - DisplayPort
+          - HDMI 1.0
+          - HDMI 2.0
+          - RJ-45 port
+          - Audio jacks
+      - name: motherboard_form_factor
+        in: query
+        schema:
+          type: string
+          enum:
+          - Full ATX
+          - Mini ATX
+          - Micro ATX
+          - Flex ATX
+          - Mini ITX
+          - Em ITX
+          - Nano ITX
+          - Pico ITX
+          - Mobile ITX
+          - DTX
+          - Mini DTX
+          - SSI
+          - SSI EEB
+          - E-ATX
+          - Extended ATX
+          - SSI MEB
+          - BTX
+          - NLX
+      - name: color
+        in: query
+        schema:
+          type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+        400:
+          description: invalid parameters
+          content: {}
+  /memory_sticks/:
+    get:
+      tags:
+      - memory sticks
+      summary: Get ram
+      operationId: part_data_handler.get_memory_sticks
+      parameters:
+      - name: manufacturer
+        in: query
+        schema:
+          type: string
+      - name: form_factor
+        in: query
+        description: The DIMM type of the ram stick.
+        schema:
+          type: string
+      - name: min_ram_size
+        in: query
+        description: The amount of ram of the stick.
+        schema:
+          type: integer
+          format: int32
+      - name: max_ram_size
+        in: query
+        description: The amount of ram of the stick.
+        schema:
+          type: integer
+          format: int32
+      - name: min_ram_speed
+        in: query
+        description: The base clock speed of the ram.
+        schema:
+          type: integer
+          format: int32
+      - name: max_ram_speed
+        in: query
+        description: The base clock speed of the ram.
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: success
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+        400:
+          description: Invalid Parameters
+          content: {}
+  /graphics_cards/:
+    get:
+      tags:
+      - graphics cards
+      summary: Get graphics card
+      operationId: part_data_handler.get_graphics_card
+      parameters:
+      - name: manufacturer
+        in: query
+        description: The GPU manufacturer
+        schema:
+          type: string
+          enum:
+          - AMD
+          - NVIDIA
+      - name: GPU_generation
+        in: query
+        description: The GPU Generation
+        schema:
+          type: string
+          enum:
+          - Geforce RTX 3000
+          - Geforce RTX 2000
+          - Geforce GTX 1000
+          - Geforce GT
+          - Geforce
+          - Quadro
+          - Quadro RTX
+          - Radeon RX
+      - name: GPU_Ports
+        in: query
+        description: The I/O GPU ports
+        schema:
+          type: string
+          enum:
+          - Type-C
+          - VGA
+          - DisplayPort
+          - MiniDisplayPort
+          - HDMI
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+        400:
+          description: Invalid Parameters
+          content: {}
+  /storage_disk/:
+    get:
+      tags:
+      - storage
+      summary: Get storage
+      operationId: part_data_handler.get_storage
+      parameters:
+      - name: category
+        in: query
+        description: The storage Category
+        required: true
+        schema:
+          type: string
+          enum:
+          - SSD
+          - HDD
+      - name: manufacturer
+        in: query
+        description: The storage Producer
+        schema:
+          type: string
+          enum:
+          - Corsair
+          - Gigabyte
+          - Intel
+          - Kingston
+          - MSI
+          - Samsung
+          - Seagate
+          - Toshiba
+          - Western Digital
+          - Crucial
+          - HyperX
+      - name: storing_type
+        in: query
+        description: The storing type
+        schema:
+          type: string
+          enum:
+          - M.2
+          - PCI-E
+          - '3.5'
+          - '2.5'
+      - name: capacity
+        in: query
+        description: The storage Capacity
+        schema:
+          type: string
+          enum:
+          - 120GB
+          - 240GB
+          - 500GB
+          - 1TB
+          - 2TB
+          - 4TB
+          - 8TB
+      - name: interface
+        in: query
+        description: The Storage Interface
+        schema:
+          type: string
+          enum:
+          - PCI-E NVMe
+          - SATA
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+        400:
+          description: Invalid Parameters
+          content: {}
+  /power_supplies/:
+    get:
+      tags:
+      - power suplies
+      summary: Get power supplies by Wattage
+      operationId: part_data_handler.get_power_supplies
+      parameters:
+      - name: min_wattage
+        in: query
+        description: The minimum wattage of the power supply.
+        schema:
+          type: integer
+          format: int32
+      - name: max_wattage
+        in: query
+        description: The maximum wattage of the power supply.
+        schema:
+          type: integer
+          format: int32
+      - name: manufacturer
+        in: query
+        description: The manufacturer of the power supply
+        schema:
+          type: string
+      - name: modular
+        in: query
+        description: The modularity of the power supply
+        schema:
+          type: string
+          enum:
+          - Full modular
+          - Semi modular
+          - Not modular
+      - name: form_factor
+        in: query
+        description: The form factor of the power supply
+        schema:
+          type: string
+          enum:
+          - ATX
+          - ATX / BTX
+          - ATX12V
+          - ATX12V / EPS12V
+          - Flex ATX
+          - Micro ATX
+          - Mini ATX
+          - Mini ITX
+          - SFX12V
+          - TFX12V
+      - name: color
+        in: query
+        description: The color of the power supply
+        schema:
+          type: string
+      - name: fan
+        in: query
+        description: Wether the power supply has a fan or Not
+        schema:
+          type: boolean
+      - name: connectors
+        in: query
+        description: The types of connectors of the power supply
+        schema:
+          type: string
+      - name: effeciency
+        in: query
+        schema:
+          type: string
+          enum:
+          - 80+
+          - 80+ Bronze
+          - 80+ Silver
+          - 80+ Gold
+          - 80+ Platinum
+          - 80+ Titanium
+      responses:
+        200:
+          description: success
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+        400:
+          description: Invalid Parameters
+          content: {}
+  /fans/:
+    get:
+      tags:
+      - fans
+      summary: Get a list of fans
+      operationId: part_data_handler.get_fans
+      parameters:
+      - name: manufacturer
+        in: query
+        schema:
+          type: string
+      - name: size
+        in: query
+        schema:
+          type: string
+          enum:
+          - 40 mm
+          - 70 mm
+          - 80 mm
+          - 92 mm
+          - 95 mm
+          - 120 mm
+          - 180 mm
+          - 193 mm
+          - 200 mm
+          - 220 mm
+          - 230 mm
+      - name: color
+        in: query
+        schema:
+          type: string
+      - name: quantidade
+        in: query
+        schema:
+          type: integer
+      - name: pwm
+        in: query
+        schema:
+          type: boolean
+      - name: led
+        in: query
+        schema:
+          type: string
+          enum:
+          - RGB
+          - Addressable RGB
+          - Multicolor
+          - Single color
+          - Blue
+          - Green
+          - Orange
+          - Pink
+          - Purple
+          - Red
+          - UV
+          - UV Blue
+          - UV Green
+          - UV Red
+          - White
+          - Yellow
+      - name: connector
+        in: query
+        schema:
+          type: string
+          enum:
+          - 3-pin
+          - 4-pin PWM
+          - 4-pin 12V RGB
+          - Proprietary RGB
+          - 3-pin 5V Addressable RGB
+          - Proprietary
+          - Proprietary PWM
+      - name: controler
+        in: query
+        schema:
+          type: string
+          enum:
+          - Manual
+          - USB
+          - 12V RGB
+          - 5V Addressable RGB
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+        400:
+          description: Invalid Parameters
+          content: {}
+  /cases/:
+    get:
+      tags:
+      - cases
+      summary: Get a list of cases
+      operationId: part_data_handler.get_cases
+      parameters:
+      - name: manufacturer
+        in: query
+        schema:
+          type: string
+      - name: case_type
+        in: query
+        schema:
+          type: string
+          enum:
+          - Full Tower
+          - Mid Tower
+          - Mini Tower
+          - Slim Line
+          - Small Form Factor
+      - name: motherboard_form_factor
+        in: query
+        schema:
+          type: string
+          enum:
+          - Full ATX
+          - Mini ATX
+          - Micro ATX
+          - Flex ATX
+          - Mini ITX
+          - Em ITX
+          - Nano ITX
+          - Pico ITX
+          - Mobile ITX
+          - DTX
+          - Mini DTX
+          - SSI
+          - SSI EEB
+          - E-ATX
+          - Extended ATX
+          - SSI MEB
+          - BTX
+          - NLX
+      - name: color
+        in: query
+        schema:
+          type: string
+      - name: side_panel_window
+        in: query
+        schema:
+          type: string
+          enum:
+          - Acrylic
+          - Mesh
+          - Tinted Acrylic
+          - Tempered Glass
+          - Tinted Tempered Glass
+      - name: shroud
+        in: query
+        schema:
+          type: boolean
+      - name: front_panel
+        in: query
+        schema:
+          type: string
+          enum:
+          - USB 3.2 Gen 2x2 Type-C
+          - USB 3.2 Gen 2 Type-C
+          - USB 3.2 Gen 1 Type-C
+          - USB 3.2 Gen 1 Type-A
+          - USB 2.0 Type-A
+      - name: min_graphics_card_length
+        in: query
+        schema:
+          type: integer
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+        400:
+          description: Invalid Parameters
+          content: {}
+  /coolers/:
+    get:
+      tags:
+      - coolers
+      summary: get a list of coolers
+      operationId: part_data_handler.get_coolers
+      parameters:
+      - name: manufacturer
+        in: query
+        schema:
+          type: string
+      - name: color
+        in: query
+        schema:
+          type: string
+      - name: socket_compatability
+        in: query
+        schema:
+          type: string
+      - name: max_heatsink_height
+        in: query
+        description: The max height the heatsink can have in milimetres
+        schema:
+          type: integer
+          format: int32
+      - name: min_heatsink_height
+        in: query
+        description: The min height the heatsink can have in milimetres
+        schema:
+          type: integer
+          format: int32
+      - name: fan
+        in: query
+        schema:
+          type: boolean
+      - name: radiator_size
+        in: query
+        schema:
+          type: string
+          enum:
+          - 120 mm
+          - 140 mm
+          - 240 mm
+          - 280 mm
+          - 360 mm
+          - 420 mm
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+        400:
+          description: Invalid Parameters
+          content: {}
+  /parts/:
+    get:
+      tags:
+      - parts
+      summary: search for parts
+      operationId: part_data_handler.search_part
+      parameters:
+      - name: sku
+        in: query
+        schema:
+          type: string
+      - name: part name
+        in: query
+        schema:
+          type: string
+      - name: manufacturer
+        in: query
+        schema:
+          type: string
+      - name: color
+        in: query
+        schema:
+          type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Part'
+        400:
+          description: Invalid Parameters
+          content: {}
+components:
+  schemas:
+    Part:
+      type: object
+      properties:
+        sku:
+          type: string
+        part_info:
+          type: array
+          items:
+            $ref: '#/components/schemas/Atribute'
+        prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+    Atribute:
+      type: object
+      properties:
+        atribute:
+          type: string
+        value:
+          type: string
+    Price:
+      type: object
+      properties:
+        shop:
+          type: string
+        value:
+          type: string
+    CaseType:
+      type: string
+      enum:
+      - Full Tower
+      - Mid Tower
+      - Mini Tower
+      - Slim Line
+      - Small Form Factor
+    MotherboardFormFactor:
+      type: string
+      enum:
+      - AT
+      - ATX
+      - EATX
+      - Flex ATX
+      - HPTX
+      - Micro ATX
+      - Mini ITX
+      - Thin Mini ITX
+      - Mini DTX
+      - SSI CEB
+      - SSI EEB
+      - XL ATX

@@ -19,7 +19,7 @@ def get_parts(query_parameters):
     parts = pcpartpicker_col.find(query_parameters)
     part_list = []
     for part in parts:
-        part_list.append(part['Part #'])
+        part_list.append(part)
     return part_list
     
 def parse_pcpartpicker_page(sku):
