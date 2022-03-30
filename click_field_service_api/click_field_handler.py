@@ -1,26 +1,14 @@
-def get_processors():
-    pass
+from http import client
+from pymongo import MongoClient
 
-def get_memory_sticks():
-    pass
+client = MongoClient('172.17.0.3:27017')
+clickfield_db = client['clickfield_data']
+clickfield_col = clickfield_db['clickfield_data']
+def get_part(sku):
+    return clickfield_col.find_one({'sku': sku})
 
-def get_graphics_card():
-    pass
-
-def get_storage():
-    pass
-
-def get_power_supplies():
-    pass
-
-def get_fans():
-    pass
-
-def get_cases():
-    pass
-
-def get_coolers():
-    pass
-
-def search_part():
-    pass
+def get_parts(sku_list):
+    price_list = []
+    for sku in sku_list:
+        price_list.append(get_part(sku))
+    return price_list

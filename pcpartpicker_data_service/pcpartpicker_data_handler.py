@@ -7,10 +7,10 @@ pcpartpicker_db = client['pc_part_picker_data']
 pcpartpicker_col = pcpartpicker_db['pc_part_picker_data']
 
 def get_info(sku):
-    sku_query = {'sku': sku}
+    sku_query = {'Part #': sku}
     part_data = pcpartpicker_col.find_one(sku_query)
     if part_data:
-        return part_data[0]
+        return part_data
     part = parse_pcpartpicker_page(sku)
     pcpartpicker_col.insert_one(part)
     return part
@@ -19,14 +19,14 @@ def get_parts(query_parameters):
     parts = pcpartpicker_col.find(query_parameters)
     part_list = []
     for part in parts:
-        part_list.append(part['sku'])
+        part_list.append(part['Part #'])
     return part_list
     
 def parse_pcpartpicker_page(sku):
-    url = 'pcpartpicker.com/search/?q='+sku
+    url = 'http://pcpartpicker.com/search/?q='+sku
     
     response = requests.get(url)
-    soup = BeautifulSoup(response, 'lxml')
+    soup = BeautifulSoup(response.text, 'lxml')
     
     spec_list = {}
     
@@ -50,4 +50,4 @@ def parse_pcpartpicker_page(sku):
     return spec_list
 
 if __name__ == '__main__':
-    print(client.list_database_names())
+    print(get_info('100-100000065BOX'))

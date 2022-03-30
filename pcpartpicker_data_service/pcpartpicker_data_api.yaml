@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Scrapping Service
+  title: Pc Part Picker Data Service
   description: This sevice provides up to date information regarding computer component prices in major technology shops in Portugal
   contact:
     email: apiteam@swagger.io
@@ -56,10 +56,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PartPriceInformation'
+                $ref: '#/components/schemas/PartInformation'
             application/xml:
               schema:
-                $ref: '#/components/schemas/PartPriceInformation'
+                $ref: '#/components/schemas/PartInformation'
 components:
   schemas:
     PartInformation:
