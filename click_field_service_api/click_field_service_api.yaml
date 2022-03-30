@@ -14,317 +14,89 @@ servers:
 - url: https://petstore.swagger.io/api
 - url: http://petstore.swagger.io/api
 tags:
-- name: processors
-  description: Everything about Processors
-- name: motherboards
-  description: Everything about Motherboards
-- name: memory sticks
-  description: Everything about Ram Memory
-- name: graphics cards
-  description: Everything about Graphics Cards
-- name: storage
-  description: Everything about Storage disks
-- name: power suplies
-  description: Everything about Power Suplies
-- name: fans
-  description: Everything about Fans
-- name: cases
-  description: Everything about Computer Cases
-- name: coolers
-  description: Everything about Cooling
-- name: parts
-  description: search for parts
+- name: Part Prices
+  description: Part prices from clickfield
 paths:
-  /processors/:
+  /parts/{sku_list}:
     get:
       tags:
-      - processors
-      summary: Get processors
-      operationId: click_field_handler.get_processors
+      - Part Prices
+      summary: Get The price for a list of skus
+      operationId: click_field_handler.get_parts
       parameters:
       - name: sku_list
-        in: query
+        in: path
+        required: true
         schema:
           type: array
           items:
             type: string
       responses:
-        200:
+        '200':
           description: success
           content:
             application/xml:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Part'
+                  $ref: '#/components/schemas/PartPrice'
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Part'
-        400:
-          description: Invalid Parameters
-          content: {}
-  /motherboards/:
+                  $ref: '#/components/schemas/PartPrice'
+  /parts/{sku}:
     get:
       tags:
-      - motherboards
-      summary: Get a list of motherboards
-      operationId: click_field_handler.get_motherboards
+      - Part Prices
+      summary: Get The price for a sku
+      operationId: click_field_handler.get_parts
       parameters:
-      - name: sku_list
-        in: query
+      - name: sku
+        in: path
+        required: true
         schema:
           type: array
           items:
             type: string
       responses:
-        200:
-          description: success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-        400:
-          description: invalid parameters
-          content: {}
-  /memory_sticks/:
-    get:
-      tags:
-      - memory sticks
-      summary: Get ram
-      operationId: click_field_handler.get_memory_sticks
-      parameters:
-      - name: sku_list
-        in: query
-        schema:
-          type: array
-          items:
-            type: string
-      responses:
-        200:
+        '200':
           description: success
           content:
             application/xml:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Part'
+                  $ref: '#/components/schemas/PartPrice'
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Part'
-        400:
-          description: Invalid Parameters
-          content: {}
-  /graphics_cards/:
-    get:
+                  $ref: '#/components/schemas/PartPrice'
+  /parts/{data}:
+    post:
       tags:
-      - graphics cards
-      summary: Get graphics card
-      operationId: click_field_handler.get_graphics_card
+      - Part Prices
+      summary: update the data of the service
       parameters:
-      - name: sku_list
-        in: query
+      - name: data
+        in: path
+        required: true
         schema:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/PartPrice'
       responses:
-        200:
+        '200':
           description: success
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-        400:
-          description: Invalid Parameters
-          content: {}
-  /storage_disk/:
-    get:
-      tags:
-      - storage
-      summary: Get storage
-      operationId: click_field_handler.get_storage
-      parameters:
-      - name: sku_list
-        in: query
-        schema:
-          type: array
-          items:
-            type: string
-      responses:
-        200:
-          description: success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-        400:
-          description: Invalid Parameters
-          content: {}
-  /power_supplies/:
-    get:
-      tags:
-      - power suplies
-      summary: Get power supplies by potency
-      operationId: click_field_handler.get_power_supplies
-      parameters:
-      - name: sku_list
-        in: query
-        schema:
-          type: array
-          items:
-            type: string
-      responses:
-        200:
-          description: success
-          content:
+                type: string
             application/xml:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-        400:
-          description: Invalid Parameters
-          content: {}
-  /fans/:
-    get:
-      tags:
-      - fans
-      summary: Get a list of fans
-      operationId: click_field_handler.get_fans
-      parameters:
-      - name: sku_list
-        in: query
-        schema:
-          type: array
-          items:
-            type: string
-      responses:
-        200:
-          description: success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-        400:
-          description: Invalid Parameters
-          content: {}
-  /cases/:
-    get:
-      tags:
-      - cases
-      summary: Get a list of cases
-      operationId: click_field_handler.get_cases
-      parameters:
-      - name: sku_list
-        in: query
-        schema:
-          type: array
-          items:
-            type: string
-      responses:
-        200:
-          description: success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-        400:
-          description: Invalid Parameters
-          content: {}
-  /coolers/:
-    get:
-      tags:
-      - coolers
-      summary: get a list of coolers
-      operationId: click_field_handler.get_coolers
-      parameters:
-      - name: sku_list
-        in: query
-        schema:
-          type: array
-          items:
-            type: string
-      responses:
-        200:
-          description: success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-        400:
-          description: Invalid Parameters
-          content: {}
-  /parts/:
-    get:
-      tags:
-      - parts
-      summary: search for parts
-      operationId: click_field_handler.search_part
-      parameters:
-      - name: sku_list
-        in: query
-        schema:
-          type: array
-          items:
-            type: string
-      responses:
-        200:
-          description: success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Part'
-        400:
-          description: Invalid Parameters
-          content: {}
+                type: string
+
 components:
   schemas:
     PartPrice:

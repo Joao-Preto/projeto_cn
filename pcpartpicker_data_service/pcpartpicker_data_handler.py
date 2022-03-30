@@ -31,7 +31,10 @@ def parse_pcpartpicker_page(sku):
     spec_list = {}
     
     part_name = soup.find('h1', class_='pageTitle').text
-    spec_list['cpu_name']= part_name
+    spec_list['cpu_name'] = part_name
+    
+    part_category = soup.find('section', class_='breadcrumb').ol.li.a.text
+    spec_list['category'] = part_category
     
     spec_soup_list = soup.find_all('div', class_='specs')[0].find_all('div', class_='group--spec')
     for spec_soup in spec_soup_list:
@@ -50,4 +53,8 @@ def parse_pcpartpicker_page(sku):
     return spec_list
 
 if __name__ == '__main__':
-    print(get_info('100-100000065BOX'))
+    url = 'http://pcpartpicker.com/search/?q=100-100000065BOX'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'lxml')
+    part_category = soup.find('section', class_='breadcrumb').ol.li.a.text
+    print(part_category)
