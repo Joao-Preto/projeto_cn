@@ -53,8 +53,4 @@ def parse_pcpartpicker_page(sku):
     return spec_list
 
 if __name__ == '__main__':
-    url = 'http://pcpartpicker.com/search/?q=100-100000065BOX'
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'lxml')
-    part_category = soup.find('section', class_='breadcrumb').ol.li.a.text
-    print(part_category)
+    print(get_info('100-100000065BOX'))

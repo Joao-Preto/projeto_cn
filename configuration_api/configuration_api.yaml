@@ -13,30 +13,6 @@ tags:
   description: Create, update and get the configurations
 
 paths:
-  /configuration/:
-    post:
-      tags:
-      - Configuration 
-      summary: create configuration 
-      operationId: configuration_handler.create_configuration
-      requestBody:
-        description: configuration
-        required: True
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Configuration'
-      responses:
-        200:
-          description: success
-          content:
-            application/json:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
- 
   /configuration/{configurationId}:
     get:
       tags:
@@ -64,7 +40,7 @@ paths:
       tags:
       - Configuration 
       summary: update configuration
-      operationId: scraping_handler.update_configuration
+      operationId: configuration_handler.update_configuration
       parameters:
       - name: configurationId
         in: path
@@ -82,19 +58,26 @@ paths:
             application/xml:
               schema:
                 type: string
-  /configuration/{userId}:
+  /configuration/{username}:
     get:
       tags:
       - Configuration
       summary: get configuration information by user id
       operationId: configuration_handler.get_configuration_by_user_id
       parameters:
-      - name: userId
+      - name: username
         in: path
         description: the id of the user
         required: True
         schema:
           type: string
+      requestBody:
+        description: configuration
+        required: True
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Configuration'
       responses:
         200:
           description: success
@@ -105,11 +88,41 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/Configuration'
+    post:
+      tags:
+      - Configuration 
+      summary: create configuration 
+      operationId: configuration_handler.create_configuration
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: configuration
+        required: True
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Configuration'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
 components:
   schemas:
     Configuration:
       type: object
       properties:
+        user:
+          type: string
         parts:
           type: array
           items:
