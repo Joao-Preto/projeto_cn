@@ -1,0 +1,109 @@
+openapi: 3.0.1
+info:
+  title: Swagger Petstore
+  description: This is a sample server Petstore server.  You can find out more about     Swagger
+    at [http://swagger.io](http://swagger.io) or on [irc.freenode.net,
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://petstore.swagger.io/api
+- url: http://petstore.swagger.io/api
+tags:
+- name: Part Prices
+  description: Part prices from assismatica
+paths:
+  /parts/:
+    get:
+      tags:
+      - Part Prices
+      summary: Get The price for a list of skus
+      operationId: assismatica_handler.get_parts
+      parameters:
+      - name: sku_list
+        in: query
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartPrice'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartPrice'
+  /parts/{sku}:
+    get:
+      tags:
+      - Part Prices
+      summary: Get The price for a sku
+      operationId: assismatica_handler.get_parts
+      parameters:
+      - name: sku
+        in: path
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartPrice'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartPrice'
+  /parts/{data}:
+    post:
+      tags:
+      - Part Prices
+      summary: update the data of the service
+      parameters:
+      - name: data
+        in: path
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/PartPrice'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+
+components:
+  schemas:
+    PartPrice:
+      type: object
+      properties:
+        sku:
+          type: string
+        price:
+          type: number
+          format: double
