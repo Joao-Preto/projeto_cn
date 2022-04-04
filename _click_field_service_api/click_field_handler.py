@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-client = MongoClient('172.17.0.3:27017')
+client = MongoClient('172.17.0.2:27017')
 clickfield_db = client['clickfield_data']
 clickfield_col = clickfield_db['clickfield_data']
 

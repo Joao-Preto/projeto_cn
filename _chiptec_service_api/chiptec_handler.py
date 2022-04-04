@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-client = MongoClient('172.17.0.3:27017')
+client = MongoClient('172.17.0.2:27017')
 chiptec_db = client['chiptec_data']
 chiptec_col = chiptec_db['chiptec_data']
 
