@@ -45,20 +45,47 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PartPrice'
+    post:
+      tags:
+      - Part Prices
+      summary: update the data of the service
+      operationId: globaldata_handler.update_prices
+      parameters: []
+      requestBody:
+        description: product descriptions to add
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PartPrice'
+          application/xml:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PartPrice'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
   /parts/{sku}:
     get:
       tags:
       - Part Prices
       summary: Get The price for a sku
-      operationId: globaldata_handler.get_parts
+      operationId: globaldata_handler.get_part
       parameters:
       - name: sku
         in: path
         required: true
         schema:
-          type: array
-          items:
-            type: string
+          type: string
       responses:
         '200':
           description: success
@@ -73,29 +100,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PartPrice'
-  /parts/{data}:
-    post:
-      tags:
-      - Part Prices
-      summary: update the data of the service
-      parameters:
-      - name: data
-        in: path
-        required: true
-        schema:
-          type: array
-          items:
-            $ref: '#/components/schemas/PartPrice'
-      responses:
-        '200':
-          description: success
-          content:
-            application/json:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
 
 components:
   schemas:

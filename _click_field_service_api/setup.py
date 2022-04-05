@@ -2,7 +2,7 @@ import json
 import os
 from pymongo import MongoClient
 
-dataset_path = '../datasets/clickfield/'
+dataset_path = './datasets/clickfield'
 client = MongoClient('172.17.0.2:27017')
 clickfield_db = client['clickfield_data']
 clickfield_col = clickfield_db['clickfield_data']
@@ -19,4 +19,4 @@ def create_database():
     
     
 if __name__ == '__main__':
-    create_database() 
+    print(clickfield_col.find_one({'sku':'CMT32GX5M2X5600C36'}))
