@@ -1,18 +1,8 @@
 openapi: 3.0.1
 info:
-  title: Swagger Petstore
-  description: This is a sample server Petstore server.  You can find out more about     Swagger
-    at [http://swagger.io](http://swagger.io) or on [irc.freenode.net,
-  termsOfService: http://swagger.io/terms/
-  contact:
-    email: apiteam@swagger.io
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
-servers:
-- url: https://petstore.swagger.io/api
-- url: http://petstore.swagger.io/api
+  title: Clickfield Data Service
+  description: This service profides information on the prices of computer parts from the chiptec online store.
+  version: 1.0.2
 tags:
 - name: Part Prices
   description: Part prices from clickfield
@@ -106,6 +96,10 @@ components:
       type: object
       properties:
         sku:
+          type: string
+        timestamp:
+          type: number
+        ean:
           type: string
         price:
           type: number

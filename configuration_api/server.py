@@ -20,3 +20,18 @@ def home():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
+{
+    "parts": [
+        {
+            {
+                "part_type": "CPU",
+                "part_sku": "100-100000065BOX"
+            },
+            {
+                "part_type": "MOTHERBOARD",
+                "part_sku": "90MB1170-MVAAY0"
+            }
+        }
+    ]
+}

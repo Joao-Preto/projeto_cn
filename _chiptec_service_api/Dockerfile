@@ -2,7 +2,6 @@ FROM python:3
 WORKDIR /run_dir
 COPY . /run_dir
 RUN pip install -r requirements.txt
-RUN python setup.py
 EXPOSE 5000
 ENTRYPOINT [ "python" ]
 CMD [ "server.py" ]

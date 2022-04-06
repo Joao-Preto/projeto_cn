@@ -2,12 +2,7 @@ openapi: 3.0.1
 info:
   title: Scrapping Service
   description: This sevice provides up to date information regarding computer component prices in major technology shops in Portugal
-  contact:
-    email: apiteam@swagger.io
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: 1.0.1
 tags:
 - name: Configuration 
   description: Create, update and get the configurations
@@ -121,17 +116,14 @@ components:
     Configuration:
       type: object
       properties:
-        user:
-          type: string
         parts:
           type: array
           items:
             $ref: '#/components/schemas/Part'
-       
     Part:
       type: object
       properties:
-        partType:
+        part_type:
           type: string
-        partSku: 
+        part_sku: 
           type: string
