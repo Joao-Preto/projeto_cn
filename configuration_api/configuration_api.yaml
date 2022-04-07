@@ -66,13 +66,6 @@ paths:
         required: True
         schema:
           type: string
-      requestBody:
-        description: configuration
-        required: True
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Configuration'
       responses:
         200:
           description: success
@@ -116,6 +109,10 @@ components:
     Configuration:
       type: object
       properties:
+        user:
+          type: string
+        uuid:
+          type: string
         parts:
           type: array
           items:
