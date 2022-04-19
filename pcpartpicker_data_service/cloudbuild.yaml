@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'eu.gcr.io/$PROJECT_ID/part_picker_container:latest', '.' ]
+
+images: [eu.gcr.io/$PROJECT_ID/part_picker_container:latest]
