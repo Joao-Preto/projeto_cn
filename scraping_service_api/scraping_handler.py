@@ -104,7 +104,7 @@ def parse_chiptec_page(url):
     product['price'] = soup.find('div', class_='price-box').span.span.text.replace(' €', '')
     product['timestamp'] = datetime.timestamp(datetime.now())
     
-    redis_conn.set('sku:chiptec:'+product['sku'],url)
+    #redis_conn.set('sku:chiptec:'+product['sku'],url)
     
     return product
 
@@ -151,8 +151,8 @@ def parse_globaldata_page(url):
     product['price'] = soup.find('span', class_='price__amount').text.replace(' €', '').replace('\n', '')
     product['timestamp'] = datetime.timestamp(datetime.now())
     
-    redis_conn.set('sku:globaldata:'+product['sku'], url)
-    redis_conn.set('ean:'+product['ean'], product['sku'])
+    #redis_conn.set('sku:globaldata:'+product['sku'], url)
+    #redis_conn.set('ean:'+product['ean'], product['sku'])
     
     return product
 
@@ -190,7 +190,7 @@ def parse_clickfield_page(url):
     product['price'] = price_div.find('span', class_='whole').text.replace('€', '') + price_div.find('span', class_='fraction').text
     product['timestamp'] = datetime.timestamp(datetime.now())
 
-    redis_conn.set('sku:clickfield:'+product['sku'], url)
+    #redis_conn.set('sku:clickfield:'+product['sku'], url)
     
     return product
 
@@ -200,3 +200,6 @@ def get_store_from_url(url):
 def get_pcpartpicker_data(sku):
     response = requests.get(pcpartpicker_service_url, params={'sku':sku})
     return json.loads(response.json)
+
+if __name__ == '__main__':
+    update_globaldata_data()
