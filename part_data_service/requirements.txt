@@ -1,3 +1,4 @@
 flask
 flask_restful
 connexion[swagger-ui]
+pymongo[srv]
