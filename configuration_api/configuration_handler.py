@@ -30,14 +30,17 @@ def update_configuration(configurationId, body):
     return current['configuration_id']
 
 def get_configuration_by_user_id(username):
-    print('here?')
-    print(username)
     search_result = configuration_col.find({'user': username})
-    print(search_result)
     conf_list = []
     for result in search_result:
-        conf_list.append(create_message_object(result))
+        conf_list.append(create_message_object(result, username))
     return conf_list
 
-def create_message_object(db_object):
+def create_message_object(db_object, user='error'):
+    if db_object is None:
+        return {'error': user}
     return {'user':db_object['user'], 'uuid': db_object['uuid'], 'parts': db_object['parts']}
+
+
+if __name__ == '__main__':
+    print(get_configuration_by_user_id('jan'))
