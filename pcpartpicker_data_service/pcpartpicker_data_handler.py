@@ -1,8 +1,9 @@
 from bs4 import BeautifulSoup
 import requests
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 
-client = MongoClient('172.17.0.2:27017')
+client = MongoClient("mongodb+srv://bruno:123@cloudcomputing.2raxg.mongodb.net/CloudComputing?retryWrites=true&w=majority",server_api=ServerApi('1'))
 pcpartpicker_db = client['pc_part_picker_data']
 pcpartpicker_col = pcpartpicker_db['pc_part_picker_data']
 
