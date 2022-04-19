@@ -3,6 +3,6 @@ WORKDIR /run_dir
 COPY . /run_dir
 RUN pip install -r requirements.txt
 RUN python setup.py
-EXPOSE 5000
+EXPOSE 8080
 ENTRYPOINT [ "python" ]
 CMD [ "server.py" ]
