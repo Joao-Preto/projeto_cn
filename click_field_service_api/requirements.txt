@@ -1,5 +1,0 @@
-flask
-flask_restful
-pymongo
-connexion[swagger-ui]
-pymongo[srv]
