@@ -1,0 +1,9 @@
+flask
+flask_restful
+Authlib
+Authlib_httpx
+Authlib_requests
+Authlib_Flask"not sure if like this since on comand is pip install Authlib Flask"
+pymongo
+connexion[swagger-ui]
+pymongo[srv]

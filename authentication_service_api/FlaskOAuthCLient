@@ -1,0 +1,67 @@
+from flask import Flask, jsonify
+from authlib.integrations.flask_client import OAuth
+
+#TODO
+google = oauth.register('google',
+    client_id='{{ iISfSksGAxU0FcZi7Q1c4BlrBTFoJ5y3 }}', #Machine to machine app client id
+    client_secret='{{ UWqdIzyxoPPdHJ55CtP3wgcuzm_WXMDfJ9ULY87wdFmmZwfrZEJQkvwh2_e8Qyao }}', #Machine to machine app client secret
+    request_token_url='https://api.twitter.com/oauth/request_token',
+    request_token_params=None,
+    access_token_url='https://api.twitter.com/oauth/access_token',
+    access_token_params=None,
+    authorize_url='https://api.twitter.com/oauth/authenticate',
+    authorize_params=None,
+    api_base_url='https://api.twitter.com/1.1/',
+    client_kwargs={
+        'signature_method': 'RSA-SHA256',
+        'signature_type': 'HEADER',
+        'rsa_key': 'Your-RSA-Key'
+}, 
+    )
+
+app = Flask(__name__)
+oauth = OAuth(app)
+
+@app.route('/login')
+def login():
+    redirect_uri = url_for('authorize', _external=True)
+    return google.authorize_redirect(redirect_uri)
+
+@app.route('/authorize')
+def authorize():
+    token = google.authorize_access_token()
+    # you can save the token into database
+    profile = google.get('/user', token=token)
+    return jsonify(profile)
+
+
+
+# Simple Code Demo For Sending clientID/Secret and getting the token (client info HARDCODED)
+# import http.client
+
+# conn = http.client.HTTPSConnection("dev-3tp2vx8e.eu.auth0.com")
+
+# payload = "{\"client_id\":\"iISfSksGAxU0FcZi7Q1c4BlrBTFoJ5y3\",\"client_secret\":\"UWqdIzyxoPPdHJ55CtP3wgcuzm_WXMDfJ9ULY87wdFmmZwfrZEJQkvwh2_e8Qyao\",\"audience\":\"https://console.cloud.google.com/home/dashboard?project=cloudcomputing-347017\",\"grant_type\":\"client_credentials\"}"
+# headers = { 'content-type': "application/json" }
+
+# conn.request("POST", "/oauth/token", payload, headers)
+
+# res = conn.getresponse()
+# data = res.read()
+
+# print(data.decode("utf-8"))
+
+
+
+# Simple Code Demo For Sending token and getting site info(get request  needs to be modified)() (bearer token and Path_to_your_api HARDCODED Better on config)
+# import http.client
+
+# conn = http.client.HTTPConnection("https://console.cloud.google.com/home/dashboard?project=cloudcomputing-347017")
+# headers = { 'authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik5rcGNsTUg0UXlwejVjT2dHQ1o5WiJ9.eyJpc3MiOiJodHRwczovL2Rldi0zdHAydng4ZS5ldS5hdXRoMC5jb20vIiwic3ViIjoiaUlTZlNrc0dBeFUwRmNaaTdRMWM0QmxyQlRGb0o1eTNAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vY29uc29sZS5jbG91ZC5nb29nbGUuY29tL2hvbWUvZGFzaGJvYXJkP3Byb2plY3Q9Y2xvdWRjb21wdXRpbmctMzQ3MDE3IiwiaWF0IjoxNjUwNDUyMjk2LCJleHAiOjE2NTA1Mzg2OTYsImF6cCI6ImlJU2ZTa3NHQXhVMEZjWmk3UTFjNEJsckJURm9KNXkzIiwic2NvcGUiOiJhdXRoZW50aWNhdGlvbjpsb2dpbiBhdXRoZW50aWNhdGlvbjpzaW5ndXAiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.OQozc8dSGGVEBHeEhIXrJsHuCL3pVbIC-AS-LQDORNFLO24FQER2WviUYCBcNczne-BTmrEug0XHjpUNxIi2LrN-crTQPlHFLrLwqG0nqZxudWXiuhtvwDNNHjv3fUiChiFSPE_OhKo07jPoFjbFLZtHNuZp31jQ7k-DuunV5l6dQ0ScL8JPAvVcDAmCN1lUevj8Wx4J06fDfiDjHghx8Eh1Suc_YNtQccOPam67w9aDoiD7m4pG8fwpVPotqpZvAvCg82Objo84FwdJyN3wEg4EfrSo-b6IorqXfXPlHQJ3qwZV2VVj5TgJdMmA_uxnfGH4FgujOb2g4Y1H7wDqEQ" }
+
+# conn.request("GET", "/", headers=headers)
+
+# res = conn.getresponse()
+# data1 = res.read()
+
+# print(data1.decode("utf-8"))

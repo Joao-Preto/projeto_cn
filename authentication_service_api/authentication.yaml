@@ -1,0 +1,58 @@
+openapi: 3.0.1
+info:
+  title: Authetication Service
+  description: This sevice provides the client authetication for our app
+  version: 0.0.1
+tags:
+- name: Authetication
+  description: Sing up and login into our app.
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      required:
+        - id
+        - name
+  securitySchemes:
+    oAuth0CN:   
+      type: oauth2
+      description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
+      flows:
+        implicit:   # <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
+          authorizationUrl: https://api.example.com/oauth2/authorize
+          scopes:
+            read_savedData: read your data
+            write_savedData: modify data in your account
+
+
+# Step 2 - apply security globally...
+
+security: 
+  - oAuthSample: 
+    - read_savedData
+    - write_savedData
+
+
+# ... or to individual operations
+
+paths:
+   /processors/:
+      get:
+      summary: Gets a user by ID.
+      security:
+        -oAuthCN:
+          - read_savedData
+          - write_savedData
+#       summary: Add a new pet
+#       security: 
+#         - oAuthSample: 
+#           - write_pets
+#           - read_pets
+  
