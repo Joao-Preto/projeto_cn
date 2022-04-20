@@ -1,7 +1,8 @@
 import uuid
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 
-client = MongoClient('172.17.0.2:27017')
+client = MongoClient("mongodb+srv://bruno:123@cloudcomputing.2raxg.mongodb.net/CloudComputing?retryWrites=true&w=majority",server_api=ServerApi('1'))
 configuration_db = client['configuration_data']
 configuration_col = configuration_db['configuration_data']
 

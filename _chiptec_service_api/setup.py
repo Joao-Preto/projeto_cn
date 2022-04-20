@@ -1,9 +1,10 @@
 import json
 import os
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 
 dataset_path = '../datasets/chiptec/'
-client = MongoClient('172.17.0.2:27017')
+client = MongoClient("mongodb+srv://bruno:123@cloudcomputing.2raxg.mongodb.net/CloudComputing?retryWrites=true&w=majority",server_api=ServerApi('1'))
 clickfield_db = client['chiptec_data']
 clickfield_col = clickfield_db['chiptec_data']
 
