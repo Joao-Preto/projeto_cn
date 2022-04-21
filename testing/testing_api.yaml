@@ -1,0 +1,37 @@
+openapi: 3.0.1
+info:
+  title: Clickfield Data Service
+  description: This service profides information on the prices of computer parts from the chiptec online store.
+  version: 1.0.2
+paths:
+  /:
+    get:
+      operationId: testing_handler.test
+      responses:
+        '200':
+          description: success
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartPrice'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartPrice'
+components:
+  schemas:
+    PartPrice:
+      type: object
+      properties:
+        sku:
+          type: string
+        timestamp:
+          type: number
+        ean:
+          type: string
+        price:
+          type: number
+          format: double
